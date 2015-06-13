@@ -8,4 +8,7 @@ app.config.from_object('config.DevConfig')
 api = Api(app)
 db = SQLAlchemy(app)
 
+from app import views
+
+
 
