@@ -5,6 +5,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password_hash = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True)
     tasks = db.relationship('Task', backref='user',
                              lazy='dynamic')
 
@@ -16,7 +17,7 @@ class User(db.Model):
         return bcrypt.check_password_hash(pw_hash, password)
 
     def __repr__(self):
-        return "{}:{}".format(self.id, self.username)
+        return "{}:{} [{}]".format(self.id, self.username, self.email)
 
 
 class Task(db.Model):

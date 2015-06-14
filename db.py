@@ -1,10 +1,11 @@
+#run this file to create and populate a db with some dummy values
 from app import db
 from app.models import User, Task
 
-USERS = [ {'username':'JamesBond', 'pw':'python'}, 
-		  {'username':'PhilIvey', 'pw':'javascript'},
-		  {'username':'KeiserSoze', 'pw':'ruby'},
-		  {'username':'Bowser', 'pw':'haskell'} ]
+USERS = [ {'username':'JamesBond', 'pw':'python', 'email':'James007@mi6.gov'}, 
+		  {'username':'PhilIvey', 'pw':'javascript', 'email':'polarizing@ft.com'},
+		  {'username':'KeiserSoze', 'pw':'ruby', 'email':'kevinspacey@gmail.com'},
+		  {'username':'Bowser', 'pw':'haskell', 'email':'bowser@nes.com'} ]
 
 TASKS = [ { 'title':'go to store','body':'pick up some koolaid'},
 		  { 'title':'omaha', 'body':' repot dbl suit aces' },                         
@@ -18,7 +19,7 @@ def reset_db():
 def set_users():
 	for user in USERS:
 		try: 	
-			db.session.add(User(username=user["username"]))
+			db.session.add(User(username=user["username"],email=user['email']))
 		except:
 			print "error creating users"
 			break
