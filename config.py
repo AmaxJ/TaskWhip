@@ -1,3 +1,7 @@
+import os
+
+_basedir = os.path.abspath(os.path.dirname(__file__))
+
 class Config(object):
 	DEBUG = False
 	TESTING = False
@@ -6,7 +10,6 @@ class Config(object):
 
 class DevConfig(Config):
 	DEBUG = True
-	SQLALCHEMY_DATABASE_URI='sqlite:////tmp/task.db'
-
+	SQLALCHEMY_DATABASE_URI='sqlite:////' + _basedir + 'task.db'
 
 
