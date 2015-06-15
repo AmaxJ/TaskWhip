@@ -16,9 +16,11 @@ from app.resources import UserListAPI, UserAPI
 
 API_VERSION = Config.API_VERSION
 #register resources here:
-api.add_resource(UserListAPI, '/taskx/api/v{version}/users'.format(version=API_VERSION),
+api.add_resource(UserListAPI, 
+                 '/taskx/api/v{version}/users'.format(version=API_VERSION),
                  endpoint='users')
-api.add_resource(UserAPI, '/taskx/api/v{version}/users/<int:id>'.format(version=API_VERSION),
+api.add_resource(UserAPI, 
+                 '/taskx/api/v{version}/users/<int:id>'.format(version=API_VERSION),
                  endpoint='user')
 
 
