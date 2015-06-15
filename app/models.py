@@ -2,6 +2,7 @@ from app import db, bcrypt
 from datetime import datetime 
 
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password_hash = db.Column(db.String(255))
@@ -21,6 +22,7 @@ class User(db.Model):
 
 
 class Task(db.Model):
+    __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime)
     title = db.Column(db.String(255))
