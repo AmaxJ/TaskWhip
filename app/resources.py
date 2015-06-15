@@ -8,13 +8,13 @@ user_field = {
     'email' : fields.String
 }
 
-class UsersAPI(Resource):
+class UserListAPI(Resource):
     def __init__(self):
         self.parser =  reqparse.RequestParser()
         self.parser.add_argument('username', type=str, required=True, location='json')
         self.parser.add_argument('email', type=str, required=True, location='json')
         self.parser.add_argument('password', type=str, required=True, location='json')
-        super(UsersAPI, self).__init__()
+        super(UserListAPI, self).__init__()
 
     def get(self):
         users = User.query.all()
@@ -28,8 +28,24 @@ class UsersAPI(Resource):
         db.session.add(newUser)
         db.session.commit()
         return {'user': marshal(args, user_field) }
-        
-    def delete(self):
+     
+
+class UserAPI(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('username', type=str, location='json')
+        self.parser.add_argument('email', type=str, location='json')
+        self.parser.add_argument('password', type=str, location='json')
+        super(UserAPI, self).__init__()
+
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        return { 'user': marshal(user, user_field) }
+
+    def put(self, id):
+        pass
+
+    def delete(self, id):
         pass
 
 

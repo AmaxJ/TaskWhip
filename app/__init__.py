@@ -11,11 +11,12 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 from app import views
-from app.resources import UsersAPI
+from app.resources import UserListAPI, UserAPI
 
 
 #register resources here:
-api.add_resource(UsersAPI, '/taskx/api/v1.0/users', endpoint='users')
+api.add_resource(UserListAPI, '/taskx/api/v1/users', endpoint='users')
+api.add_resource(UserAPI, '/taskx/api/v1/users/<int:id>', endpoint='user')
 
 
 
