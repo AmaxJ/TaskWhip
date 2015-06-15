@@ -7,6 +7,7 @@ class Config(object):
 	TESTING = False
 	PORT = 8080
 	HOST = '0.0.0.0'
+	API_VERSION = 1.0
 
 class DevConfig(Config):
 	DEBUG = True
@@ -15,5 +16,7 @@ class DevConfig(Config):
 class TestConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI='sqlite:////'+ _basedir + 'test.db'
+    LIVESERVER_PORT = 8080
+    TESTING = True
 
 
