@@ -12,4 +12,8 @@ class DevConfig(Config):
 	DEBUG = True
 	SQLALCHEMY_DATABASE_URI='sqlite:////' + _basedir + 'task.db'
 
+class TestConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI='sqlite:////'+ _basedir + 'test.db'
+
 
