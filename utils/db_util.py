@@ -1,4 +1,7 @@
 #run this file to create and populate a db with some dummy values
+import sys
+import os
+sys.path.insert(0, os.path.abspath('..'))
 from app import db
 from app.models import User, Task
 
