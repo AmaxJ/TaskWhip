@@ -49,13 +49,12 @@ class UserAPI(Resource):
         return {"error":"User not found"}, 404
 
     def put(self, id): 
-    # Not working
-        user = User.query.get(id)
+        user = User.query.filter_by(id=id).first()
         if user is not None:
             args = self.parser.parse_args()
             for key, value in args.items():
                 if args[key] is not None:
-                    user.key = value
+                    setattr(user, key, value)
             db.session.commit()
             return {"user": marshal(user,user_field) }
         return {"error": "User not found"}, 404
