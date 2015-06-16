@@ -2,8 +2,8 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
-from app import db
-from app.models import User, Task
+from api import db
+from api.models import User, Task
 
 USERS = [ {'username':'JamesBond', 'pw':'python', 'email':'James007@mi6.gov'}, 
 		  {'username':'PhilIvey', 'pw':'javascript', 'email':'polarizing@ft.com'},

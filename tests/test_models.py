@@ -3,8 +3,8 @@ import os
 sys.path.insert(0, os.path.abspath('..'))
 import unittest
 from flask.ext.testing import TestCase
-from app import app, db
-from app.models import User, Task
+from api import app, db
+from api.models import User, Task
 
 
 class UserDBTests(TestCase):

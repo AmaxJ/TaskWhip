@@ -11,8 +11,8 @@ api = Api(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-from app import views
-from app.resources import UserListAPI, UserAPI
+from api import views
+from api.resources.users import UserListAPI, UserAPI
 
 API_VERSION = Config.API_VERSION
 #register resources here:
