@@ -24,7 +24,7 @@ class User(db.Model):
 class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime, default=datetime.now)
     title = db.Column(db.String(255))
     body = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
