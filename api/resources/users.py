@@ -22,7 +22,7 @@ class UserListAPI(Resource):
 
     def get(self):
         users = User.query.all()
-        return { 'users' : [marshal(user, user_field) for user in users]}
+        return { 'users' : [marshal(user, user_field) for user in users] }
 
     def post(self):
         args = self.parser.parse_args()
@@ -58,7 +58,6 @@ class UserAPI(Resource):
             db.session.commit()
             return {"user": marshal(user,user_field) }
         return {"error": "User not found"}, 404
-
 
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
