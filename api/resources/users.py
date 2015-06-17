@@ -22,7 +22,7 @@ class UserListAPI(Resource):
 
     def get(self):
         users = User.query.all()
-        return { 'users' : [marshal(user, user_field) for user in users]}
+        return { 'users' : [marshal(user, user_field) for user in users] }
 
     def post(self):
         args = self.parser.parse_args()
