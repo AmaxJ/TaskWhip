@@ -59,7 +59,6 @@ class UserAPI(Resource):
             return {"user": marshal(user,user_field) }
         return {"error": "User not found"}, 404
 
-
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
         db.session.delete(user)

@@ -9,6 +9,7 @@ task_fields = {
     'created' : fields.DateTime,
     'user_id' : fields.Integer,
     'id' : fields.Integer
+    #url building not working:
     #'uri' : fields.Url('task')
 }
 
@@ -20,8 +21,6 @@ class TaskListAPI(Resource):
                                  trim=True)
         self.parser.add_argument('body', type=str, required=False,
                                  location='json')
-        #self.parser.add_argument('created', type=datetime, location='json') #?
-        #self.parser.add_argument('user_id', type=int, location='json')
         super(TaskListAPI, self).__init__()
 
     def get(self, user_id):
@@ -39,12 +38,31 @@ class TaskListAPI(Resource):
         return {'task': marshal(newTask, task_fields) }
 
 
-
 class TaskAPI(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('title', type=str, location='json', 
+                                 trim=True)
+        self.parser.add_argument('body', type=str, location='json')
+        super(TaskAPI, self).__init__()
+
     def get(self, user_id, task_id):
         task = Task.query.filter_by(user_id=user_id, id=task_id).first()
         return {'task': marshal(task, task_fields) }
-    def put(self):
-        pass
-    def delete(self):
-        pass
+    
+    def put(self, user_id, task_id):
+        task = Task.query.filter_by(user_id=user_id, id=task_id).first()
+        if task is not None:
+            args = self.parser.parse_args()
+            for key, value in args.items():
+                if args[key] is not None:
+                    setattr(task, key, value)
+            db.session.commit()
+            return {'task': marshal(task, task_fields) }
+        return {"error": "Task not found"}, 404
+
+    def delete(self, user_id, task_id):
+        task = Task.query.filter_by(user_id=user_id, id=task_id).first()
+        db.session.delete(task)
+        db.session.commit()
+        return {"deleted":True}
