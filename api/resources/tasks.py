@@ -9,7 +9,6 @@ task_fields = {
     'created' : fields.DateTime,
     'user_id' : fields.Integer,
     'id' : fields.Integer,
-    #url building not working:
     'uri' : fields.Url('task')
 }
 

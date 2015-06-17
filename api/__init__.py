@@ -27,7 +27,7 @@ api.add_resource(TaskListAPI,
                  '/taskx/api/v{version}/tasks/user<int:user_id>'.format(version=API_VERSION),
                  endpoint='tasks')
 api.add_resource(TaskAPI,
-                 '/taskx/api/v{version}/tasks/user<int:user_id>/task<int:id>'.format(version=API_VERSION),
+                 '/taskx/api/v{version}/tasks/user<int:user_id>/<int:id>'.format(version=API_VERSION),
                  endpoint='task')
 
 
