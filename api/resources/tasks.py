@@ -1,5 +1,5 @@
 from api import db
-from api.models import Task
+from api.models.tasks import Task
 from flask_restful import Resource, fields, marshal, reqparse
 from datetime import datetime
 

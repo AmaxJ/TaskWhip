@@ -1,5 +1,5 @@
 from api import db
-from api.models import User 
+from api.models.users import User 
 from flask_restful import Resource, fields, marshal, reqparse
 
 user_field = {

@@ -4,7 +4,8 @@ sys.path.insert(0, os.path.abspath('..'))
 import unittest
 from flask.ext.testing import TestCase
 from api import app, db
-from api.models import User, Task
+from api.models.users import User
+from api.models.tasks import Task
 
 
 class UserDBTests(TestCase):
