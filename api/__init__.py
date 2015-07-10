@@ -11,7 +11,7 @@ api = Api(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-from api import views
+#from api import views
 from api.resources.users import UserListAPI, UserAPI
 from api.resources.tasks import TaskListAPI, TaskAPI
 

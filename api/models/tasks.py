@@ -1,5 +1,6 @@
 from api import db
 from datetime import datetime 
+from api.models.groups import Group
 
 
 class Task(db.Model):
@@ -8,7 +9,11 @@ class Task(db.Model):
     created = db.Column(db.DateTime, default=datetime.now)
     title = db.Column(db.String(255))
     body = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+    
     def __repr__(self):
-        return "'{}' [user#: {}]".format(self.title, self.user_id)
+        return "{}: {}".format(self.group_id, self.title)
