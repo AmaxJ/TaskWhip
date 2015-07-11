@@ -10,6 +10,7 @@ class Task(db.Model):
     title = db.Column(db.String(255))
     body = db.Column(db.Text)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    completed = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
@@ -17,3 +18,11 @@ class Task(db.Model):
     
     def __repr__(self):
         return "{}: {}".format(self.group_id, self.title)
+
+    def toggleComplete(self, boolean=True):
+        if boolean:
+            self.completed = True
+        else:
+            self.completed = False
+
+            

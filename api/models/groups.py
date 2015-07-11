@@ -20,7 +20,6 @@ class Group(db.Model):
     admins = db.relationship("User", secondary=admins_tbl,
                           backref='admin_of')
     members = db.relationship("User", secondary=members_tbl, backref="groups")
-    member_count = db.Column(db.Integer)
     description = db.Column(db.Text)
     created = db.Column(db.DateTime, default=datetime.now)
     tasks = db.relationship('Task', backref='group', lazy='dynamic')
@@ -30,7 +29,7 @@ class Group(db.Model):
             setattr(self, key, value)
 
     def __repr__(self):
-        return "{}: {}".format(self.company_id, self.name,)
+        return "{}: {}".format(self.company_id, self.name)
 
 
 class Company(db.Model):
