@@ -82,7 +82,7 @@ class GroupDbTests(TestCase):
         self.assertEqual(len(Group.query.all()), 0)
         group = Group(name="Review Club",
                       company_id=1, description="desc",
-                      created = datetime.utcnow())
+                      createdOn = datetime.utcnow())
         db.session.add(group)
         db.session.commit()
         group = Group.query.filter_by(id=1).first()
@@ -96,7 +96,7 @@ class GroupDbTests(TestCase):
         """Test adding members and admins to group"""
         group = Group(name="Review Club",
                       company_id=1, description="desc",
-                      created = datetime.utcnow())
+                      createdOn = datetime.utcnow())
         db.session.add(group)
         db.session.commit()
         #load
@@ -118,7 +118,7 @@ class GroupDbTests(TestCase):
         """Test adding tasks to a group"""
         group = Group(name="Review Club",
                       company_id=1, description="desc",
-                      created = datetime.utcnow())
+                      createdOn = datetime.utcnow())
         db.session.add(group)
         db.session.commit()
         #load

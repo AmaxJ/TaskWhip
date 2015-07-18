@@ -6,11 +6,12 @@ from api.models.groups import Group
 class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
-    created = db.Column(db.DateTime, default=datetime.now)
+    createdOn = db.Column(db.DateTime, default=datetime.now)
+    completedOn = db.Column(db.DateTime)
     title = db.Column(db.String(255))
     body = db.Column(db.Text)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    completed = db.Column(db.Boolean, default=False)
+    complete = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
@@ -21,8 +22,8 @@ class Task(db.Model):
 
     def toggleComplete(self, boolean=True):
         if boolean:
-            self.completed = True
+            self.complete = True
         else:
-            self.completed = False
+            self.complete = False
 
             

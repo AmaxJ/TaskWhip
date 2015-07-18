@@ -25,16 +25,16 @@ def create_companys():
 
 def create_groups():
 	group1 = Group(name="Loompas", company_id=1,
-				  created=datetime.utcnow(),
+				  createdOn=datetime.utcnow(),
 				  description="Mix the chocolate")
 	group2 = Group(name="Oompas", company_id=1,
-				  created=datetime.utcnow(),
+				  createdOn=datetime.utcnow(),
 				  description="Gum research")
 	group3 = Group(name="Gardeners", company_id=2,
-				  created=datetime.utcnow(),
+				  createdOn=datetime.utcnow(),
 				  description="Landscaping duties")
 	group4 = Group(name="Floor Staff", company_id=2,
-				  created=datetime.utcnow(),
+				  createdOn=datetime.utcnow(),
 				  description="Assist customers")
 	db.session.add(group1)
 	db.session.add(group2)
@@ -47,19 +47,19 @@ def create_tasks():
 	try:
 		task1 = Task(title="Mash cocoa beans",
 					 body="Make sure to grind them very fine.",
-					 group_id=1, created=datetime.utcnow())
+					 group_id=1, createdOn=datetime.utcnow())
 		task2 = Task(title="Side-effects mitigation",
 					 body="Fix swelling reaction some people have",
-					 group_id=2, created=datetime.utcnow())	
+					 group_id=2, createdOn=datetime.utcnow())	
 		task3 = Task(title="Test flavors",
 					 body="Create new flavors",
-					 group_id=2, created=datetime.utcnow())	
+					 group_id=2, createdOn=datetime.utcnow())	
 		task4 = Task(title="Trim hedges on coligni ave",
 					 body="Reponsible for houses 321, 326, 327",
-					 group_id=3, created=datetime.utcnow())
+					 group_id=3, createdOn=datetime.utcnow())
 		task5 = Task(title="Fertilizer shipment",
 					 body="Delivery at 9:00am tuesday.",
-					 group_id=4, created=datetime.utcnow())
+					 group_id=4, createdOn=datetime.utcnow())
 		db.session.add(task1)
 		db.session.add(task2)
 		db.session.add(task3)

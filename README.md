@@ -1,6 +1,6 @@
 #Restful Task manager
 
-##Notes:
+##Note:
 App/api initialization, as well as resources and routes in app/__init__.py
 
 ##Tests

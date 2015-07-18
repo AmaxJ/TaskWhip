@@ -21,7 +21,7 @@ class Group(db.Model):
                           backref='admin_of')
     members = db.relationship("User", secondary=members_tbl, backref="groups")
     description = db.Column(db.Text)
-    created = db.Column(db.DateTime, default=datetime.now)
+    createdOn = db.Column(db.DateTime, default=datetime.now)
     tasks = db.relationship('Task', backref='group', lazy='dynamic')
     
     def __init__(self, **kwargs):

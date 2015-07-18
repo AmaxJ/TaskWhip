@@ -38,7 +38,7 @@ class TaskDBTests(TestCase):
         self.assertEqual(len(Task.query.all()), 0)
         task = Task(title="Go to store",
                     body="Get eggs and milk.",
-                    group_id=1, created=datetime.utcnow())
+                    group_id=1, createdOn=datetime.utcnow())
         db.session.add(task)
         db.session.commit()
         task = Task.query.filter_by(id=1).first();
@@ -51,15 +51,15 @@ class TaskDBTests(TestCase):
         """Test toggleCommplete() method"""
         task = Task(title="Go to store",
                     body="Get eggs and milk.",
-                    group_id=1, created=datetime.utcnow())
+                    group_id=1, createdOn=datetime.utcnow())
         db.session.add(task)
         db.session.commit()
         task = Task.query.filter_by(id=1).first()
-        self.assertEqual(task.completed, False)
+        self.assertEqual(task.complete, False)
         task.toggleComplete()
-        self.assertEqual(task.completed, True)
+        self.assertEqual(task.complete, True)
         task.toggleComplete(False)
-        self.assertEqual(task.completed, False)
+        self.assertEqual(task.complete, False)
 
 
 if __name__=='__main__':
