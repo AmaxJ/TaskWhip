@@ -12,6 +12,10 @@ class Task(db.Model):
     body = db.Column(db.Text)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
     complete = db.Column(db.Boolean, default=False)
+    #status values: pending, complete, unassigned
+    status = db.Column(db.String, default="pending")
+    timeActive = db.Column(db.Integer)
+
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
@@ -22,8 +26,13 @@ class Task(db.Model):
 
     def toggleComplete(self, boolean=True):
         if boolean:
-            self.complete = True
+            setattr(self, "complete", True)
+            setattr(self, "completedOn", datetime.now())
+            setattr(self, "status", "completed")
+            delta = self.completedOn - self.createdOn
+            setattr(self, "timeActive", delta.seconds)
         else:
-            self.complete = False
+            setattr(self, "complete", False)
+            setattr(self, "status", "pending")
 
             

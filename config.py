@@ -7,8 +7,8 @@ class Config(object):
     DEBUG = False
     TESTING = False
     PORT = 8080
-    HOST = '0.0.0.0'
-    API_VERSION = 0.1
+    HOST = '127.0.0.1'
+    API_VERSION = 0
 
 
 class DevConfig(Config):
