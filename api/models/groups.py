@@ -36,7 +36,7 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
     group_count = db.Column(db.Integer)
-    url = db.column(db.String(255))
+    website = db.Column(db.String(255))
     groups = db.relationship('Group', backref='company')
     employees = db.relationship('User', backref='company', lazy='dynamic')
 

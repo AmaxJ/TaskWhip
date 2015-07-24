@@ -11,7 +11,7 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True)
     password_hash = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True)
-    rank = db.Column(db.String(10), default="employee")
+    rank = db.Column(db.String(10), default="user")
     tasks = db.relationship('Task', secondary=tasks_tbl,
         backref='user') #add lazy loading?
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))

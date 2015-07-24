@@ -14,10 +14,10 @@ def reset_db():
 	db.create_all()
 
 def create_companys():
-	company1 = Company(name="Chocolate Factory",
-					   url="www.wonka.com")
+	company1 = Company(name="Chocolate.Factory",
+					   website="www.site.com")
 	company2 = Company(name="Larchmont Nurseries",
-					   url="www.larchmontnurseries.com")
+					   website="www.larchmontnurseries.com")
 	db.session.add(company1)
 	db.session.add(company2)
 	db.session.commit()

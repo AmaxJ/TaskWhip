@@ -6,18 +6,21 @@ user_field = {
     'id' : fields.Integer,
     'username' : fields.String,
     'email' : fields.String,
+    'rank' : fields.String,
     'uri' : fields.Url('user')
 }
 
 class UserListAPI(Resource):
     def __init__(self):
-        self.parser =  reqparse.RequestParser()
+        self.parser =  reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('username', type=str, required=True, 
                                 location='json', help="Username required")
         self.parser.add_argument('email', type=str, required=True,
                                  location='json',help="Email required")
         self.parser.add_argument('password', type=str, required=True, 
                                   location='json', help="Password required")
+        self.parser.add_argument('company_id', type=int, location='json',
+                                  help='Company ID required')
         super(UserListAPI, self).__init__()
 
     def get(self):
@@ -36,34 +39,46 @@ class UserListAPI(Resource):
 
 class UserAPI(Resource):
     def __init__(self):
-        self.parser = reqparse.RequestParser()
+        self.parser = reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('username', type=str, location='json')
         self.parser.add_argument('email', type=str, location='json')
         self.parser.add_argument('password', type=str, location='json')
         super(UserAPI, self).__init__()
 
     def get(self, id):
-        user = User.query.filter_by(id=id).first()
-        if user is not None:
-            return { 'user': marshal(user, user_field) }
-        return {"error":"User not found"}, 404
+        try:
+            user = User.query.filter_by(id=id).first()
+            if user is not None:
+                return { 'user': marshal(user, user_field) }
+        except Exception as e:
+            print e
+            return {"error":"User not found"}, 404
 
     def put(self, id): 
         user = User.query.filter_by(id=id).first()
         if user is not None:
-            args = self.parser.parse_args()
-            for key, value in args.items():
-                if args[key] is not None:
-                    setattr(user, key, value)
-            db.session.commit()
-            return {"user": marshal(user,user_field) }
+            try:
+                args = self.parser.parse_args()
+                for key, value in args.items():
+                    if args[key] is not None:
+                        setattr(user, key, value)
+                db.session.commit()
+                return {"user": marshal(user,user_field) }
+            except Exception as e:
+                print e
+                return { "error" : "Edit failed" }
         return {"error": "User not found"}, 404
 
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
-        db.session.delete(user)
-        db.session.commit()
-        return { 'deleted':True }
+        if user is not None:
+            try:
+                db.session.delete(user)
+                db.session.commit()
+                return { 'deleted':True }
+            except Exception as e:
+                print e
+                return { "error" : "Delete failed"}
 
 
 

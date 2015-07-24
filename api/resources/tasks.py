@@ -19,7 +19,7 @@ task_fields = {
 class TaskListAPI(Resource):
 
     def __init__(self):
-        self.parser = reqparse.RequestParser()
+        self.parser = reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('title', type=str, required=True,
                                  location='json', help='Title required',
                                  trim=True)
@@ -35,7 +35,7 @@ class TaskListAPI(Resource):
 class TasksByGroup(Resource):
 
     def __init__(self):
-        self.parser = reqparse.RequestParser()
+        self.parser = reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('title', type=str, required=True,
                                  location='json', help='Title required',
                                  trim=True)
@@ -66,7 +66,7 @@ class TasksByGroup(Resource):
 class TaskAPI(Resource):
     
     def __init__(self):
-        self.parser = reqparse.RequestParser()
+        self.parser = reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('title', type=str, location='json', 
                                  trim=True)
         self.parser.add_argument('body', type=str, location='json'),
@@ -98,9 +98,9 @@ class TaskAPI(Resource):
                         setattr(task, key, value)
                 db.session.commit()
                 return {'task': marshal(task, task_fields) }
-            except Exception as err:
-                print err
-                return { "Error" : "Sorry, something went wrong!" }
+            except Exception as e:
+                print e
+                return { "Error" : str(e) }
         return {"Error": "Task not found"}, 404
 
     def delete(self, group_id, id):#task_id

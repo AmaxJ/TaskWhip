@@ -28,13 +28,13 @@ class CompanyDbTests(TestCase):
         """Test company is created and saved into database"""
         self.assertEqual(len(Company.query.all()), 0)
         company = Company(name="Amazon",
-                          url="www.amazon.com")
+                          website="www.amazon.com")
         db.session.add(company)
         db.session.commit()
         company = Company.query.filter_by(id=1).first()
         self.assertEqual(len(Company.query.all()),1)
         self.assertEqual(company.name, "Amazon")
-        self.assertEqual(company.url, "www.amazon.com")
+        self.assertEqual(company.website, "www.amazon.com")
 
     def test_company_add_employees(self):
         """Test employees successfully added to company"""
