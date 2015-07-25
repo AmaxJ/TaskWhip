@@ -1,9 +1,10 @@
 from api import db
 from datetime import datetime 
 from api.models.groups import Group
+from mixins import Dictify
 
 
-class Task(db.Model):
+class Task(db.Model, Dictify):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     createdOn = db.Column(db.DateTime, default=datetime.now)

@@ -1,5 +1,7 @@
 from api import db
 from datetime import datetime
+#provides return_dict method for each model
+from mixins import Dictify
 
 #relationships:
 members_tbl = db.Table('members_tbl',
@@ -12,7 +14,7 @@ admins_tbl = db.Table('admins_tbl',
     )
 
 
-class Group(db.Model):
+class Group(db.Model, Dictify):
     __tablename__ = 'group'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
@@ -32,13 +34,14 @@ class Group(db.Model):
         return "{}: {}".format(self.company_id, self.name)
 
 
-class Company(db.Model):
+class Company(db.Model, Dictify):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
     group_count = db.Column(db.Integer)
     website = db.Column(db.String(255))
     groups = db.relationship('Group', backref='company')
     employees = db.relationship('User', backref='company', lazy='dynamic')
+    uri = db.Column(db.String(300), unique=True)
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
@@ -46,3 +49,7 @@ class Company(db.Model):
 
     def __repr__(self):
         return "{}".format(self.name)
+
+
+
+

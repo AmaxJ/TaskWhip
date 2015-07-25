@@ -1,5 +1,7 @@
 from api import db
 from api.models.groups import Company
+from flask import make_response, url_for
+import json
 from flask_restful import Resource, fields, marshal, reqparse
 
 company_fields = {
@@ -17,8 +19,17 @@ class CompanyList(Resource):
         self.parser.add_argument('website', type=str, location='json')
 
     def get(self):
-        companies = Company.query.all()
-        return { 'companies' : [ marshal(company, company_fields) for company in companies ] }
+        query = Company.query.all()
+        companies = []
+        for company in query:
+            company_id = getattr(company, 'id')
+            print company_id
+            uri = url_for("company", id=company_id)
+            companies.append(company.return_dict("name", "website", uri=uri))
+        # companies = [company.return_dict("name", "website", uri=url_for('company', id=company.id)) for company in Company.query.all()]
+        
+        return make_response(json.dumps( {"companies" : companies } ))
+        # return { 'companies' : [ json.dumps(company.return_dict("name", "website")) for company in companies ] }
 
     def post(self):
         try:
