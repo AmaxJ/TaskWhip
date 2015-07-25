@@ -41,7 +41,6 @@ class Company(db.Model, Dictify):
     website = db.Column(db.String(255))
     groups = db.relationship('Group', backref='company')
     employees = db.relationship('User', backref='company', lazy='dynamic')
-    uri = db.Column(db.String(300), unique=True)
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
