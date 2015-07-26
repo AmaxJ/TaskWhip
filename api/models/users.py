@@ -1,13 +1,13 @@
 from api import db, bcrypt
 from api.models.tasks import Task 
-from mixins import Dictify
+from mixins import DbMixin
 
 tasks_tbl = db.Table('tasks_tbl',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('task_id', db.Integer, db.ForeignKey('task.id'))
     )
 
-class User(db.Model, Dictify):
+class User(db.Model, DbMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
     password_hash = db.Column(db.String(255))

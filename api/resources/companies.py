@@ -2,13 +2,8 @@ from api import db
 from api.models.groups import Company
 from flask import make_response, url_for
 import json
-from flask_restful import Resource, fields, marshal, reqparse
+from flask_restful import Resource, reqparse
 
-company_fields = {
-    'name' : fields.String,
-    'website' : fields.String,
-    'uri' : fields.Url('company')
-}
 
 class CompanyList(Resource):
 
@@ -20,16 +15,21 @@ class CompanyList(Resource):
 
     def get(self):
         query = Company.query.all()
-        companies = []
-        for company in query:
-            company_id = getattr(company, 'id')
-            print company_id
-            uri = url_for("company", id=company_id)
-            companies.append(company.return_dict("name", "website", uri=uri))
-        # companies = [company.return_dict("name", "website", uri=url_for('company', id=company.id)) for company in Company.query.all()]
-        
-        return make_response(json.dumps( {"companies" : companies } ))
-        # return { 'companies' : [ json.dumps(company.return_dict("name", "website")) for company in companies ] }
+        if len(query) > 0:
+            companies = []
+            try:
+                for company in query:
+                    company_id = getattr(company, 'id')
+                    uri = url_for("company", id=company_id)
+                    companies.append(company.return_dict("name", "website", uri=uri))
+                response = make_response(json.dumps( {"companies" : companies } ))
+                response.headers["content-type"] = "application/json"
+                return response
+            except Exception as e:
+                print e
+                return {"error" : "Could not retrieve companies"}
+        return {"error" : "No companies found"}
+
 
     def post(self):
         try:
@@ -39,10 +39,15 @@ class CompanyList(Resource):
                 setattr(newCompany, 'website', args['website'])
             db.session.add(newCompany)
             db.session.commit()
-            return {'company' : marshal(newCompany, company_fields) }
+            uri = url_for("company", id=newCompany.id)
+            company = Company.query.filter_by(name=args["name"]).first()
+            company = company.return_dict("name", "website", uri=uri)
+            response = make_response(json.dumps({"company" : company }))
+            response.headers["content-type"] = "application/json"
+            return response
         except Exception as e:
             print e
-            return {"error" : str(e) }
+            return {"error" : "Error creating new company" }
 
 
 class CompanyAPI(Resource):
@@ -55,7 +60,11 @@ class CompanyAPI(Resource):
     def get(self, id):
         try:
             company = Company.query.filter_by(id=id).first()
-            return { 'company' : marshal(company, company_fields) }
+            uri = url_for("company", id=id)
+            company = company.return_dict("name", "website", uri=uri)
+            response = make_response(json.dumps({"company":company}))
+            response.headers["content-type"] = "application/json"
+            return response 
         except Exception as e:
             print e
             return { 'error' : "Sorry, company not found" }, 404
@@ -69,10 +78,25 @@ class CompanyAPI(Resource):
                     if args[key] is not None:
                         setattr(company, key, value)
                 db.session.commit()
-                return { "company" : marshal(company, company_fields) }
+                uri = url_for("company", id=id)
+                company = company.return_dict("name", "website", uri=uri)
+                response = make_response(json.dumps({"company":company}))
+                response.headers["content-type"] = "application/json"
+                return response 
             except Exception as e:
                 print e
                 return { 'error' : "Edit failed" }
         return { 'error' : "Company not found" }, 404
+
+    def delete(self, id):
+        company = Company.query.filter_by(id=id).first()
+        if company:
+            try:
+                db.session.delete(company)
+                db.session.commit()
+                return {"deleted" : True }
+            except Exception as e:
+                print e
+                return { "error" : "Delete unsuccessful" }
 
         

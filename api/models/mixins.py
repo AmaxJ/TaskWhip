@@ -1,6 +1,6 @@
 #useful method
 
-class Dictify(object):
+class DbMixin(object):
 
     def return_dict(self, *args, **kwargs):
         """Return column names and values as dictionary for JSON serialization"""

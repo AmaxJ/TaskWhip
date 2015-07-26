@@ -1,7 +1,7 @@
 from api import db
 from datetime import datetime
 #provides return_dict method for each model
-from mixins import Dictify
+from mixins import DbMixin
 
 #relationships:
 members_tbl = db.Table('members_tbl',
@@ -14,7 +14,7 @@ admins_tbl = db.Table('admins_tbl',
     )
 
 
-class Group(db.Model, Dictify):
+class Group(db.Model, DbMixin):
     __tablename__ = 'group'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
@@ -34,7 +34,7 @@ class Group(db.Model, Dictify):
         return "{}: {}".format(self.company_id, self.name)
 
 
-class Company(db.Model, Dictify):
+class Company(db.Model, DbMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
     group_count = db.Column(db.Integer)
