@@ -1,6 +1,8 @@
 from api import db
 from api.models.tasks import Task
 from flask_restful import Resource, fields, marshal, reqparse
+from flask import url_for, make_response
+import json
 from datetime import datetime
 
 task_fields = {
@@ -29,8 +31,12 @@ class TaskListAPI(Resource):
 
     def get(self):
         tasks = Task.query.all()
-        return {'tasks':[marshal(task, task_fields) for task in tasks]}
-
+        try:
+            return {"tasks":[marshal(task, task_fields) for task in tasks] }, 200
+        except Exception as e:
+            print e
+            return {"error":"Problem retrieving tasks"}, 404
+            
 
 class TasksByGroup(Resource):
 
@@ -43,10 +49,12 @@ class TasksByGroup(Resource):
                                  location='json')        
 
     def get(self, group_id):
-        tasks = Task.query.filter_by(group_id=group_id)
-        if tasks:
-            return { 'tasks' : [marshal(task, task_fields) for task in tasks] }, 200
-        return { 'Error' : 'No tasks found'}, 404
+        tasks = Task.query.filter_by(group_id=group_id).all()
+        try: 
+            return {"tasks":[marshal(task, task_fields) for task in tasks]}, 200
+        except Exception as e:
+            print e
+            return {"error":"Problem retrieving tasks"}, 404
 
     def post(self, group_id):
         args = self.parser.parse_args()
@@ -57,10 +65,10 @@ class TasksByGroup(Resource):
                            created=datetime.now())
             db.session.add(newTask)
             db.session.commit()
-            return {'task': marshal(newTask, task_fields) }
-        except Exception:
-            print Exception
-            return { 'Error' : 'Sorry, something went wrong!' }
+            return {"task": marshal(newTask, task_fields)}, 200
+        except Exception as e:
+            print e
+            return {"error":"Problem retrieving tasks"}, 404
 
 
 class TaskAPI(Resource):
@@ -77,8 +85,13 @@ class TaskAPI(Resource):
     def get(self, group_id, id): #task_id
         task = Task.query.filter_by(group_id=group_id, id=id).first()
         if task:
-            return {'task': marshal(task, task_fields) }
-        return {"Error": "Task not found"}, 404
+            try:
+                return {"task":marshal(task, task_fields)}, 200
+            except Exception as e:
+                print e
+                return {"error":"Problem retrieving task"}, 404
+        else:
+            return {"error":"Sorry, task not found."}, 404
     
     def put(self, group_id, id): #task_id
         task = Task.query.filter_by(group_id=group_id, id=id).first()

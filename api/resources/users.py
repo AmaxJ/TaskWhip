@@ -2,12 +2,19 @@ from api import db
 from api.models.users import User 
 from flask import url_for, make_response
 import json
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, fields, marshal
 
 
+user_field = {
+    'id' : fields.Integer,
+    'username' : fields.String,
+    'email' : fields.String,
+    'rank' : fields.String,
+    'uri' : fields.Url('user')
+}
 
 class UserListAPI(Resource):
-    
+
     def __init__(self):
         self.parser =  reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('username', type=str, required=True, 
@@ -21,42 +28,25 @@ class UserListAPI(Resource):
         super(UserListAPI, self).__init__()
 
     def get(self):
-        query = User.query.all()
-        if len(query) > 0:
-            users = []
-            try:
-                for user in query:
-                    user_id = getattr(user, 'id')
-                    uri = url_for("user", id=user_id)
-                    users.append(user.return_dict( "id", "username", "email", 
-                                                   "rank", uri=uri))
-                response = make_response(json.dumps({"users" : users}))
-                response.headers["content-type"] = "application/json"
-                return response
-            except Exception as e:
-                print e
-                return {"error" : "Could not retrieve users"}
-        return {"error":"No users found"}
+        users = User.query.all()
+        try:
+            return {"users" : [marshal(user, user_field) for user in users] }
+        except Exception as e:
+            print e
+            return {"error" : "Failed to retrieve users."}, 404
 
     def post(self):
         try:
             args = self.parser.parse_args()
-            newUser = User(username=args["username"],
+            user = User(username=args["username"],
                            email=args["email"])
-            newUser.hash_password(args["password"])
-            db.session.add(newUser)
+            user.hash_password(args["password"])
+            db.session.add(user)
             db.session.commit()
-            uri = url_for("user", id=newUser.id)
-            #re-query so we can call the return_dict() method
-            user = User.query.filter_by(username=args["username"]).first()
-            user = user.return_dict("id", "username", "email", 
-                                    "rank", uri=uri)
-            response = make_response(json.dumps({"user":user}))
-            response.headers["content-type"] = "application/json"
-            return response    
+            return {"user": marshal(user, user_field) }, 200  
         except Exception as e:
             print e
-            return {"error":"Error creating new user"}
+            return {"error":"Error creating new user"}, 404
 
      
 
@@ -72,12 +62,7 @@ class UserAPI(Resource):
     def get(self, id):
         try:
             user = User.query.filter_by(id=id).first()
-            uri = url_for("user", id=id)
-            user = user.return_dict("id", "username", "email", 
-                                    "rank", uri=uri)
-            response = make_response(json.dumps({"user": user}))
-            response.headers["content-type"] = "application/json"
-            return response
+            return {"user":marshal(user, user_field) }, 200
         except Exception as e:
             print e
             return {"error" : "User not found"}, 404
@@ -91,12 +76,7 @@ class UserAPI(Resource):
                     if args[key] is not None:
                         setattr(user, key, value)
                 db.session.commit()
-                uri = url_for("user", id=id)
-                user = user.return_dict("id", "username", "email", 
-                                        "rank", uri=uri)
-                response = make_response(json.dumps({"user": user}))
-                response.headers["content-type"] = "application/json"
-                return response
+                return {"user":marshal(user, user_field)}, 200
             except Exception as e:
                 print e
                 return { "error" : "Edit failed" }
