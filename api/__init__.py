@@ -13,23 +13,26 @@ bcrypt = Bcrypt(app)
 
 #from api import views
 from api.resources.users import UserListAPI, UserAPI
-from api.resources.tasks import TaskListAPI, TasksByGroup, TaskAPI
+from api.resources.tasks import TaskListAPI, TasksByGroupId, TasksByGroupName, TaskAPI
 from api.resources.companies import CompanyList, CompanyAPI
 
 API_VERSION = Config.API_VERSION
 #register resources here:
-api.add_resource(UserListAPI, 
+api.add_resource(UserListAPI,
                  '/taskx/api/v{version}/users'.format(version=API_VERSION),
                  endpoint='users', strict_slashes=False)
-api.add_resource(UserAPI, 
+api.add_resource(UserAPI,
                  '/taskx/api/v{version}/users/<int:id>'.format(version=API_VERSION),
                  endpoint='user', strict_slashes=False)
 api.add_resource(TaskListAPI,
                  '/taskx/api/v{version}/tasks'.format(version=API_VERSION),
                  endpoint='tasks', strict_slashes=False)
-api.add_resource(TasksByGroup,
+api.add_resource(TasksByGroupId,
                 '/taskx/api/v{version}/<int:group_id>/tasks'.format(version=API_VERSION),
-                endpoint='tasksByGroup', strict_slashes=False)
+                endpoint='tasksByGroupId', strict_slashes=False)
+api.add_resource(TasksByGroupName,
+                '/taskx/api/v{version}/<string:group_name>/tasks'.format(version=API_VERSION),
+                endpoint='tasksByGroupName', strict_slashes=False)
 api.add_resource(TaskAPI,
                 '/taskx/api/v{version}/<int:group_id>/tasks/<int:id>'.format(version=API_VERSION),
                 endpoint='task', strict_slashes=False)

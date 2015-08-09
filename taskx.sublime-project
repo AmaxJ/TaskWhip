@@ -2,7 +2,10 @@
 	"folders":
 	[
 		{
-			"path": "/Users/Alan/Desktop/Programming/proj2/taskx"
+			"path": "."
+		},
+		{
+			"path": "/Users/Alan/Envs/taskx"
 		}
 	]
 }

@@ -25,7 +25,7 @@ class Group(db.Model, DbMixin):
     description = db.Column(db.Text)
     createdOn = db.Column(db.DateTime, default=datetime.now)
     tasks = db.relationship('Task', backref='group', lazy='dynamic')
-    
+
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -48,7 +48,5 @@ class Company(db.Model, DbMixin):
 
     def __repr__(self):
         return "{}".format(self.name)
-
-
 
 
