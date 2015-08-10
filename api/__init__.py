@@ -11,13 +11,15 @@ api = Api(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-#from api import views
+#import resources
 from api.resources.users import UserListAPI, UserAPI
 from api.resources.tasks import TaskListAPI, TasksByGroupId, TasksByGroupName, TaskAPI
 from api.resources.companies import CompanyList, CompanyAPI
+from api.resources.groups import GroupList, GroupListByCompanyId, GroupAPI
+from api.resources.test import Test
 
 API_VERSION = Config.API_VERSION
-#register resources here:
+#register resources
 api.add_resource(UserListAPI,
                  '/taskx/api/v{version}/users'.format(version=API_VERSION),
                  endpoint='users', strict_slashes=False)
@@ -42,6 +44,15 @@ api.add_resource(CompanyList,
 api.add_resource(CompanyAPI,
                 '/taskx/api/v{version}/companies/<int:id>'.format(version=API_VERSION),
                 endpoint='company', strict_slashes=False)
+api.add_resource(GroupList,
+                 '/taskx/api/v{version}/groups'.format(version=API_VERSION),
+                 endpoint='groups', strict_slashes=False)
+api.add_resource(GroupListByCompanyId,
+                 '/taskx/api/v{version}/<int:company_id>/groups'.format(version=API_VERSION),
+                 endpoint='groupsByCompanyId', strict_slashes=False)
+api.add_resource(GroupAPI,
+                 '/taskx/api/v{version}/<int:company_id>/groups/<int:id>'.format(version=API_VERSION),
+                 endpoint='group', strict_slashes=False)
 
 
 @app.after_request

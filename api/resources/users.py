@@ -1,5 +1,5 @@
 from api import db
-from api.models.users import User 
+from api.models.users import User
 from flask import url_for, make_response
 import json
 from flask_restful import Resource, reqparse, fields, marshal
@@ -10,6 +10,7 @@ user_field = {
     'username' : fields.String,
     'email' : fields.String,
     'rank' : fields.String,
+    'tasks' : fields.List(fields.String),
     'uri' : fields.Url('user')
 }
 
@@ -17,11 +18,11 @@ class UserListAPI(Resource):
 
     def __init__(self):
         self.parser =  reqparse.RequestParser(bundle_errors=True)
-        self.parser.add_argument('username', type=str, required=True, 
+        self.parser.add_argument('username', type=str, required=True,
                                 location='json', help="Username required")
         self.parser.add_argument('email', type=str, required=True,
                                  location='json',help="Email required")
-        self.parser.add_argument('password', type=str, required=True, 
+        self.parser.add_argument('password', type=str, required=True,
                                   location='json', help="Password required")
         self.parser.add_argument('company_id', type=int, location='json',
                                   help='Company ID required')
@@ -43,12 +44,12 @@ class UserListAPI(Resource):
             user.hash_password(args["password"])
             db.session.add(user)
             db.session.commit()
-            return {"user": marshal(user, user_field) }, 200  
+            return {"user": marshal(user, user_field) }, 200
         except Exception as e:
             print e
             return {"error":"Error creating new user"}, 404
 
-     
+
 
 class UserAPI(Resource):
 
@@ -67,7 +68,7 @@ class UserAPI(Resource):
             print e
             return {"error" : "User not found"}, 404
 
-    def put(self, id): 
+    def put(self, id):
         user = User.query.filter_by(id=id).first()
         if user is not None:
             try:

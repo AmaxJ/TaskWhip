@@ -15,7 +15,9 @@ task_fields = {
     'id' : fields.Integer,
     'complete' : fields.Boolean,
     'status' : fields.String,
-    'timeActive' : fields.Integer}
+    'timeActive' : fields.Integer,
+    'uri' : fields.Url("task")
+}
 
 class TaskListAPI(Resource):
     """Returns a list of all tasks for all groups/companies. """
@@ -48,6 +50,7 @@ class TasksByGroupId(Resource):
                                  trim=True)
         self.parser.add_argument('body', type=str, required=False,
                                  location='json')
+        super(TasksByGroupId, self).__init__()
 
     def get(self, group_id):
         tasks = Task.query.filter_by(group_id=group_id).all()
@@ -71,6 +74,7 @@ class TasksByGroupId(Resource):
             print e
             return {"error":"Problem retrieving tasks"}, 404
 
+
 class TasksByGroupName(Resource):
     """Returns a list of all tasks associated with a specific group"""
 
@@ -81,6 +85,7 @@ class TasksByGroupName(Resource):
                                  trim=True)
         self.parser.add_argument('body', type=str, required=False,
                                  location='json')
+        super(TasksByGroupName, self).__init__()
 
     def get(self, group_name):
         group = Group.query.filter_by(name=group_name).first()
@@ -105,6 +110,7 @@ class TasksByGroupName(Resource):
         except Exception as e:
             print e
             return {"error":"Problem retrieving tasks"}, 404
+
 
 class TaskAPI(Resource):
     """Returns an individual task"""
@@ -141,6 +147,7 @@ class TaskAPI(Resource):
                     return { 'task' : marshal(task, task_fields) }
                 elif args["complete"] == "false":
                     task.toggleComplete(False)
+                    db.session.commit()
                     return { 'task' : marshal(task, task_fields) }
                 for key, value in args.items():
                     if args[key] is not None:

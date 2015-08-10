@@ -1,14 +1,13 @@
 from api import db
 from api.models.groups import Company
-from flask import make_response, url_for
-import json
 from flask_restful import Resource, reqparse, marshal, fields
 
 company_fields = {
     'name': fields.String,
     'website': fields.String,
     'uri': fields.Url("company"),
-    'id': fields.Integer
+    'id': fields.Integer,
+    "groups" : fields.List(fields.String)
 }
 
 
@@ -43,7 +42,7 @@ class CompanyList(Resource):
 
 
 class CompanyAPI(Resource):
-    
+
     def __init__(self):
         self.parser = reqparse.RequestParser(bundle_errors=True)
         self.parser.add_argument('name', type=str, location='json')
@@ -83,4 +82,3 @@ class CompanyAPI(Resource):
                 print e
                 return { "error" : "Delete unsuccessful" }
 
-        
