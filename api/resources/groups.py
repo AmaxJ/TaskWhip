@@ -69,23 +69,15 @@ class GroupListByCompanyId(Resource):
             if args["admins"] is not None:
                 admins = [int(id) for id in args["admins"].split(",")]
                 for id in admins:
-                    try:
-                        admin = User.query.filter_by(id=id).first()
-                        if admin is not None:
-                            newGroup.admins.append(admin)
-                    except Exception as e:
-                        print "Error adding admin id #: ", id
-                        print e
+                    admin = User.query.filter_by(id=id).first()
+                    if admin is not None:
+                        newGroup.admins.append(admin)
             if args["members"] is not None:
                 members = [int(id) for id in args["members"].split(",")]
                 for id in members:
-                    try:
-                        member = User.query.filter_by(id=id).first()
-                        if member is not None:
-                            newGroup.members.append(member)
-                    except Exception as e:
-                        print "Error adding member id #: ", id
-                        print e
+                    member = User.query.filter_by(id=id).first()
+                    if member is not None:
+                        newGroup.members.append(member)                    # except Exception as e:
             db.session.add(newGroup)
             db.session.commit()
             return {"group": marshal(newGroup, group_fields)}
