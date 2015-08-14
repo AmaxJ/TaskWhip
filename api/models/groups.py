@@ -82,7 +82,7 @@ class Group(db.Model, DbMixin):
 class Company(db.Model, DbMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True)
-    group_count = db.Column(db.Integer)
+    group_count = db.Column(db.Integer, default=0)
     website = db.Column(db.String(255))
     groups = db.relationship('Group', backref='company')
     employees = db.relationship('User', backref='company', lazy='dynamic')
@@ -100,6 +100,7 @@ class Company(db.Model, DbMixin):
             groups = getattr(self, "groups")
             groups.append(group)
             db.session.commit()
+            return True
         except Exception as e:
             raise InvalidGroupError(e)
 
@@ -109,7 +110,20 @@ class Company(db.Model, DbMixin):
             groups = getattr(self, "groups")
             groups.remove(group)
             db.session.commit()
+            return True
         except Exception as e:
             raise InvalidGroupError(e)
+
+    def update_group_count(self):
+        """Updates the group_count attribute if the number of groups has
+        changed.
+        """
+        group_count = getattr(self, "group_count")
+        groups = getattr(self, "groups")
+        if len(groups) != group_count:
+            setattr(self, "group_count", len(groups))
+            db.session.commit()
+            return True
+        return False
 
 
