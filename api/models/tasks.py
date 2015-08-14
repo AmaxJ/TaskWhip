@@ -1,5 +1,5 @@
 from api import db
-from datetime import datetime 
+from datetime import datetime
 from api.models.groups import Group
 from mixins import DbMixin
 
@@ -21,12 +21,12 @@ class Task(db.Model, DbMixin):
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
-    
+
     def __repr__(self):
         return "{}: {}".format(self.group_id, self.title)
 
-    def toggleComplete(self, boolean=True):
-        if boolean:
+    def toggleComplete(self, done=True):
+        if done:
             setattr(self, "complete", True)
             setattr(self, "completedOn", datetime.now())
             setattr(self, "status", "completed")
@@ -36,4 +36,4 @@ class Task(db.Model, DbMixin):
             setattr(self, "complete", False)
             setattr(self, "status", "pending")
 
-            
+
