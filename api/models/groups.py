@@ -3,7 +3,17 @@ from datetime import datetime
 #provides return_dict method for each model
 from mixins import DbMixin
 
-#relationships:
+
+class InvalidUserError(Exception):
+    """Raise when object passed is not a User instance"""
+    pass
+
+class InvalidGroupError(Exception):
+    """Raise when object passed is not a Group instance"""
+    pass
+
+
+# relationship tables for members and admins
 members_tbl = db.Table('members_tbl',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('group_id', db.Integer, db.ForeignKey('group.id'))
@@ -32,6 +42,42 @@ class Group(db.Model, DbMixin):
     def __repr__(self):
         return "{}: {}".format(self.company_id, self.name)
 
+    def add_members(self, users, admin=False):
+        """ Adds users to group. Can take either a single user or a list of users
+        as the first argument. Setting admin flag to 'True' adds the users to the
+        groups admin list.
+        """
+        try:
+            usr = getattr(self, "members") if not admin else getattr(self, "admins")
+            if isinstance(users, list):
+                usr.extend(users)
+                db.session.commit()
+                return True
+            else:
+                usr.append(users)
+                db.session.commit()
+                return True
+        except Exception as e:
+            raise InvalidUserError(e)
+
+    def remove_members(self, users, admin=False):
+        """ Removes users from a group. Can take either a single user or list of users
+        as the first argument. Setting admin flag to 'False' removes the users from the
+        groups admin list.
+        """
+        try:
+            usr = getattr(self, "members") if not admin else getattr(self, "admins")
+            if isinstance(users, list):
+                for user in users:
+                    usr.remove(user)
+                db.session.commit()
+            else:
+                usr.remove(users)
+                db.session.commit()
+                return True
+        except Exception as e:
+            raise InvalidUserError(e)
+
 
 class Company(db.Model, DbMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,5 +93,23 @@ class Company(db.Model, DbMixin):
 
     def __repr__(self):
         return "{}".format(self.name)
+
+    def add_group(self, group):
+        """Adds a group to a company's list of groups."""
+        try:
+            groups = getattr(self, "groups")
+            groups.append(group)
+            db.session.commit()
+        except Exception as e:
+            raise InvalidGroupError(e)
+
+    def remove_group(self, group):
+        """Removes a group from a company's list of groups."""
+        try:
+            groups = getattr(self, "groups")
+            groups.remove(group)
+            db.session.commit()
+        except Exception as e:
+            raise InvalidGroupError(e)
 
 
