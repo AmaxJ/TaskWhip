@@ -43,9 +43,10 @@ class Group(db.Model, DbMixin):
         return "{}: {}".format(self.company_id, self.name)
 
     def add_members(self, users, admin=False):
-        """ Adds users to group. Can take either a single user or a list of users
-        as the first argument. Setting admin flag to 'True' adds the users to the
-        groups admin list.
+        """ Adds users to group.
+
+        Can take either a single user or a list of users as the first argument.
+        Setting admin flag to 'True' adds the users to the group's admin list.
         """
         try:
             usr = getattr(self, "members") if not admin else getattr(self, "admins")
@@ -61,9 +62,11 @@ class Group(db.Model, DbMixin):
             raise InvalidUserError(e)
 
     def remove_members(self, users, admin=False):
-        """ Removes users from a group. Can take either a single user or list of users
-        as the first argument. Setting admin flag to 'False' removes the users from the
-        groups admin list.
+        """ Removes users from group.
+
+        Can take either a single user or list of users as the first argument.
+        Setting admin flag to 'True' removes the users from the group's admin
+        list.
         """
         try:
             usr = getattr(self, "members") if not admin else getattr(self, "admins")
@@ -126,4 +129,10 @@ class Company(db.Model, DbMixin):
             return True
         return False
 
+    def add_employees(self, user):
+        """Registers users as a company employees.
+
+        Accepts a single user or list of users as an argument.
+        """
+        pass
 

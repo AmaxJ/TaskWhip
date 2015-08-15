@@ -95,7 +95,8 @@ class TasksByGroupName(Resource):
             return {"tasks":[marshal(task, task_fields) for task in tasks]}, 200
         except Exception as e:
             print e
-            return {"error":"Problem retrieving tasks"}, 404
+            return {"error":"Problem retrieving tasks",
+                    "msg" : str(e) }, 404
 
     def post(self, group_name):
         args = self.parser.parse_args()
@@ -110,7 +111,8 @@ class TasksByGroupName(Resource):
             return {"task": marshal(newTask, task_fields)}, 200
         except Exception as e:
             print e
-            return {"error":"Problem retrieving tasks"}, 404
+            return {"error":"Problem retrieving tasks",
+                    "msg" : str(e) }, 404
 
 
 class TaskAPI(Resource):
@@ -132,7 +134,8 @@ class TaskAPI(Resource):
                 return {"task":marshal(task, task_fields)}, 200
             except Exception as e:
                 print e
-                return {"error":"Problem retrieving task"}, 404
+                return {"error":"Problem retrieving task",
+                        "msg" : str(e) }, 404
         else:
             return {"error":"Sorry, task not found."}, 404
 
@@ -155,7 +158,8 @@ class TaskAPI(Resource):
                 return {'task': marshal(task, task_fields) }
             except Exception as e:
                 print e
-                return { "Error" : str(e) }
+                return { "error" : "Edit failed.",
+                         "msg" : str(e) }
         return {"Error": "Task not found"}, 404
 
     def delete(self, group_id, id):#task_id
