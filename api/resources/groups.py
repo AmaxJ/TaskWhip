@@ -27,7 +27,8 @@ class GroupList(Resource):
                 return {"groups": [marshal(group, group_fields) for group in groups] }, 200
             except Exception as e:
                 print e
-                return {"error":"Problem retrieving groups"}, 404
+                return {"error":"Problem retrieving groups",
+                        "msg": str(e)}, 404
         else:
             return {"error" : "No groups found"}, 404
 
@@ -46,6 +47,9 @@ class GroupListByCompanyId(Resource):
         self.parser.add_argument("members", type=str, location="json")
         self.parser.add_argument("admins", type=str, location="json")
         super(GroupListByCompanyId, self).__init__()
+
+    def _parse_ids(self, idString):
+        return map(lambda x: int(x), idString.split(","))
 
     def get(self, company_id):
         groups = Group.query.filter_by(company_id=company_id).all()
@@ -67,20 +71,15 @@ class GroupListByCompanyId(Resource):
                     description=args["description"],
                     company_id=company_id
             )
+            #admins/members should be a string of comma separated id numbers
             if args["admins"] is not None:
-                #admins will be passed as a string of comma separated id numbers
-                admins = [int(id) for id in args["admins"].split(",")]
-                for id in admins:
-                    admin = User.query.filter_by(id=id).first()
-                    if admin is not None:
-                        newGroup.admins.append(admin)
+                admin_ids = self._parse_ids(args["admins"])
+                admins = [User.query.filter_by(id=id).first() for id in admin_ids]
+                newGroup.admins.extend(admins)
             if args["members"] is not None:
-                #members passed as a string of comma separated id numbers
-                members = [int(id) for id in args["members"].split(",")]
-                for id in members:
-                    member = User.query.filter_by(id=id).first()
-                    if member is not None:
-                        newGroup.members.append(member)
+                member_ids = self._parse_ids(args["members"])
+                members = [User.query.filter_by(id=id).first() for id in member_ids]
+                newGroup.members.extend(members)
             db.session.add(newGroup)
             db.session.commit()
             return {"group": marshal(newGroup, group_fields)}
@@ -116,7 +115,7 @@ class GroupAPI(Resource):
             except Exception as e:
                 print "Error: ", e
                 return { "error": "Error retrieving group",
-                         "msg" : str(e) }
+                         "msg" : str(e) }, 404
         else:
             return { "error" : "Group not found" }, 404
 
@@ -156,10 +155,23 @@ class GroupAPI(Resource):
                 return {"error":"Error editing group",
                         "msg" : str(e) }
         else:
-            return {"error":"Group not found"}
+            return {"error":"Group not found"}, 404
 
     def delete(self, company_id, id):
-        pass
+        group = Group.query.filter_by(company_id=company_id, id=id).first()
+        if group is not None:
+            try:
+                db.session.delete(group)
+                db.session.commit()
+                return {"deleted" : True }
+            except Exception as e:
+                print e
+                return {"error":"Error deleting group",
+                        "msg" : str(e) }
+        else:
+            return {"error":"Group not found"}
+
+
 
 
 
