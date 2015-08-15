@@ -143,11 +143,11 @@ class TaskAPI(Resource):
                 #if task complete then change status and return
                 if args["complete"] == "true":
                     task.toggleComplete(True)
-                    db.session.commit()
+                    # db.session.commit()
                     return { 'task' : marshal(task, task_fields) }
                 elif args["complete"] == "false":
                     task.toggleComplete(False)
-                    db.session.commit()
+                    # db.session.commit()
                     return { 'task' : marshal(task, task_fields) }
                 for key, value in args.items():
                     if args[key] is not None:
