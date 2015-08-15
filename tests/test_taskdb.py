@@ -10,7 +10,7 @@ from api.models.tasks import Task
 from api.models.groups import Group
 
 
-class TasksDBTestCase(DatabaseTestCase):
+class TasksDBTests(DatabaseTestCase):
 
     def __init__(self, *args, **kwargs):
         DatabaseTestCase.__init__(self,*args, **kwargs)
@@ -42,6 +42,13 @@ class TasksDBTestCase(DatabaseTestCase):
         self.assertEqual(task.title, 'Go to beach')
         self.assertEqual(task.body, 'Get a tan.')
         self.assertEqual(task.group_id, 1)
+
+    def test_task_is_deleted(self):
+        """Test task is deleted from the db"""
+        self.assertEqual(len(Task.query.all()), 1)
+        task = Task.query.filter_by(id=1).first()
+        db.session.delete(task)
+        self.assertEqual(len(Task.query.all()), 0)
 
     def test_task_toggleComplete(self):
         """Test toggleCommplete() method"""
