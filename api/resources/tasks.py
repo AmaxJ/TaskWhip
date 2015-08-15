@@ -20,7 +20,7 @@ task_fields = {
 }
 
 class TaskListAPI(Resource):
-    """Returns a list of all tasks for all groups/companies. """
+    """Resource for all tasks for all groups, companies."""
 
     def __init__(self):
         self.parser = reqparse.RequestParser(bundle_errors=True)
@@ -41,7 +41,7 @@ class TaskListAPI(Resource):
 
 
 class TasksByGroupId(Resource):
-    """Returns a list of all tasks associated with a specific group"""
+    """Resource for all tasks associated with a specific group by group ID."""
 
     def __init__(self):
         self.parser = reqparse.RequestParser(bundle_errors=True)
@@ -76,7 +76,8 @@ class TasksByGroupId(Resource):
 
 
 class TasksByGroupName(Resource):
-    """Returns a list of all tasks associated with a specific group"""
+    """Resource for all tasks associated with a specific group by group name.
+    """
 
     def __init__(self):
         self.parser = reqparse.RequestParser(bundle_errors=True)
@@ -113,7 +114,7 @@ class TasksByGroupName(Resource):
 
 
 class TaskAPI(Resource):
-    """Returns an individual task"""
+    """Resource for an individual task"""
 
     def __init__(self):
         self.parser = reqparse.RequestParser(bundle_errors=True)
@@ -143,11 +144,9 @@ class TaskAPI(Resource):
                 #if task complete then change status and return
                 if args["complete"] == "true":
                     task.toggleComplete(True)
-                    # db.session.commit()
                     return { 'task' : marshal(task, task_fields) }
                 elif args["complete"] == "false":
                     task.toggleComplete(False)
-                    # db.session.commit()
                     return { 'task' : marshal(task, task_fields) }
                 for key, value in args.items():
                     if args[key] is not None:
