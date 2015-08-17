@@ -25,7 +25,6 @@ class TasksDBTests(DatabaseTestCase):
                     group_id=1, createdOn=datetime.utcnow())
         db.session.add(group)
         db.session.add(task)
-        db.session.commit()
 
     def test_task_was_created_with_params(self):
         """Test task created and stored in db with the
@@ -36,7 +35,6 @@ class TasksDBTests(DatabaseTestCase):
                     body="Get a tan.",
                     group_id=1, createdOn=datetime.utcnow())
         db.session.add(task)
-        db.session.commit()
         task = Task.query.filter_by(id=2).first();
         self.assertEqual(len(Task.query.all()), 2)
         self.assertEqual(task.title, 'Go to beach')
@@ -60,12 +58,12 @@ class TasksDBTests(DatabaseTestCase):
         self.assertEqual(task.complete, False)
 
     def test_task_createdOn_is_datetime(self):
-        """Tests createdOn attribute is datetime object"""
+        """Test createdOn attribute is datetime object"""
         task = Task.query.filter_by(id=1).first()
         self.assertIsInstance(task.createdOn, datetime)
 
     def test_task_completedOn_is_datetime(self):
-        """Tests completedOn attribute is datetime object"""
+        """Test completedOn attribute is datetime object"""
         task = Task.query.filter_by(id=1).first()
         task.toggleComplete()
         self.assertIsInstance(task.completedOn, datetime)
