@@ -2,137 +2,129 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
 import unittest
-from datetime import datetime
-from flask.ext.testing import TestCase
+from basetest import DatabaseTestCase
 from api import app, db
-from api.models.users import User
-from api.models.tasks import Task
 from api.models.groups import Company, Group
+from api.models.users import User
 
+def user_gen():
+    yield {"username":"Bill", "email":"clinton@gmail.com"}
+    yield {"username":"Richard", "email":"nixon@gmail.com"}
+    yield {"username":"George", "email":"bush@gmail.com"}
+    yield {"username":"Barack", "email":"obama@gmail.com"}
 
-class CompanyDbTests(TestCase):
+user_params = user_gen()
 
-    def create_app(self):    
-        app.config.from_object('config.TestConfig')
-        return app
-
-    def setUp(self):
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        print "teardown successful"
-
-    def test_company_was_created(self):
-        """Test company is created and saved into database"""
-        self.assertEqual(len(Company.query.all()), 0)
-        company = Company(name="Amazon",
-                          website="www.amazon.com")
-        db.session.add(company)
-        db.session.commit()
-        company = Company.query.filter_by(id=1).first()
-        self.assertEqual(len(Company.query.all()),1)
-        self.assertEqual(company.name, "Amazon")
-        self.assertEqual(company.website, "www.amazon.com")
-
-    def test_company_add_employees(self):
-        """Test employees successfully added to company"""
-        company = Company(name="Amazon",
-                          url="www.amazon.com")
-        user1 = User(username="Bob", email="Bob@amazon.com",
-                     rank="employee", company_id=1)
-        user2 = User(username="Ed", email="Ed@amazon.com",
-                     rank="manager", company_id=1) 
-        db.session.add(company)
-        db.session.add(user1)
-        db.session.add(user2)
-        db.session.commit()
-        company = Company.query.filter_by(id=1).first()
-        self.assertEqual(len(company.employees.all()), 2)
-        employee = company.employees.filter_by(username="Bob").first()
-        self.assertEqual(employee.username, "Bob")
-
-
-class GroupDbTests(TestCase):
-    def create_app(self):    
-        app.config.from_object('config.TestConfig')
-        return app
+class GroupDbTests(DatabaseTestCase):
+    def __init__(self, *args, **kwargs):
+        DatabaseTestCase.__init__(self, *args, **kwargs)
 
     def setUp(self):
         db.create_all()
-        company = Company(name="Amazon",
-                          url="www.amazon.com")
-        user1 = User(username="Bob", email="Bob@amazon.com",
-                     rank="employee", company_id=1)
-        user2 = User(username="Ed", email="Ed@amazon.com",
-                     rank="Admin", company_id=1) 
+        company = Company(name="ford",
+                          website="www.ford.com")
         db.session.add(company)
-        db.session.add(user1)
-        db.session.add(user2)
-        db.session.commit()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        print "teardown successful"
-
-    def test_group_was_created(self):
-        """Test group was created and saved to database"""
-        self.assertEqual(len(Group.query.all()), 0)
-        group = Group(name="Review Club",
-                      company_id=1, description="desc",
-                      createdOn = datetime.utcnow())
+        group = Group(name="sedans",
+                      description="4-door vehicles")
         db.session.add(group)
-        db.session.commit()
-        group = Group.query.filter_by(id=1).first()
+
+    def test_group_is_created_in_db(self):
+        """Test group is created in the db with specified
+         parameters
+         """
         self.assertEqual(len(Group.query.all()), 1)
-        self.assertEqual(group.name, "Review Club")
-        self.assertEqual(group.company_id, 1)
-        self.assertEqual(group.description, "desc")
-
-
-    def test_add_members_to_group(self):
-        """Test adding members and admins to group"""
-        group = Group(name="Review Club",
-                      company_id=1, description="desc",
-                      createdOn = datetime.utcnow())
+        group = Group(name="Testing",
+                      description="One Two Three",
+                      company_id=1)
         db.session.add(group)
-        db.session.commit()
-        #load
+        self.assertEqual(len(Group.query.all()), 2)
+        self.assertEqual(group.name, "Testing")
+        self.assertEqual(group.description, "One Two Three")
+
+    def test_group_is_deleted_from_db(self):
+        """Test group is deleted from the db"""
+        self.assertEqual(len(Group.query.all()), 1)
+        group = Group.query.filter_by(id=1).first()
+        db.session.delete(group)
+        self.assertEqual(len(Group.query.all()), 0)
+
+    def test_add_single_member_to_group(self):
+        """Test add single member to a group"""
         group = Group.query.filter_by(id=1).first()
         self.assertEqual(len(group.members), 0)
-        self.assertEqual(len(group.admins), 0)
-        user1 = User.query.filter_by(id=1).first()
-        user2 = User.query.filter_by(id=2).first()
-        group.members.append(user1)
-        group.admins.append(user2)
-        db.session.add(group)
-        db.session.commit()
-        #reload
-        group = Group.query.filter_by(id=1).first()
+        params = next(user_params)
+        user = User(**params)
+        group.add_members(user)
         self.assertEqual(len(group.members), 1)
+
+    def test_add_multiple_members_to_group(self):
+        """Test add an array of members to a group"""
+        group = Group.query.filter_by(id=1).first()
+        self.assertEqual(len(group.members), 0)
+        users = [User(**params) for params in user_gen()]
+        group.add_members(users)
+        self.assertEqual(len(group.members), 4)
+
+    def test_remove_single_member_from_group(self):
+        """Test remove a single user from a group"""
+        group = Group.query.filter_by(id=1).first()
+        self.assertEqual(len(group.members), 0)
+        params = next(user_params)
+        user = User(**params)
+        group.add_members(user)
+        self.assertEqual(len(group.members), 1)
+        group.remove_members(user)
+        self.assertEqual(len(group.members), 0)
+
+    def test_remove_multiple_members_from_group(self):
+        """Test remove an array of members from a group"""
+        group = Group.query.filter_by(id=1).first()
+        self.assertEqual(len(group.members), 0)
+        users = [User(**params) for params in user_gen()]
+        group.add_members(users)
+        self.assertEqual(len(group.members), 4)
+        group.remove_members(users)
+        self.assertEqual(len(group.members), 0)
+
+    def test_add_single_admin_to_group(self):
+        """Test add a single admin to a group"""
+        group = Group.query.filter_by(id=1).first()
+        self.assertEqual(len(group.admins), 0)
+        params = next(user_params)
+        user = User(**params)
+        group.add_members(user, admin=True)
         self.assertEqual(len(group.admins), 1)
 
-    def test_add_tasks_to_group(self):
-        """Test adding tasks to a group"""
-        group = Group(name="Review Club",
-                      company_id=1, description="desc",
-                      createdOn = datetime.utcnow())
-        db.session.add(group)
-        db.session.commit()
-        #load
+    def test_add_multiple_admins_to_group(self):
+        """Test add an array of admins to a group"""
         group = Group.query.filter_by(id=1).first()
-        self.assertEqual(len(group.tasks.all()), 0)
-        task = Task(title="test", body="asdf",
-                    group_id=1)
-        db.session.add(task)
-        db.session.commit()
-        #reload group
+        self.assertEqual(len(group.admins), 0)
+        users = [User(**params) for params in user_gen()]
+        group.add_members(users, admin=True)
+        self.assertEqual(len(group.admins), 4)
+
+    def test_remove_single_admin_from_group(self):
+        """Test remove a single admin from a group"""
         group = Group.query.filter_by(id=1).first()
-        self.assertEqual(len(group.tasks.all()), 1)
+        self.assertEqual(len(group.admins), 0)
+        params = next(user_params)
+        user = User(**params)
+        group.add_members(user, admin=True)
+        self.assertEqual(len(group.admins), 1)
+        group.remove_members(user, admin=True)
+        self.assertEqual(len(group.admins), 0)
+
+    def test_remove_multiple_admins_from_group(self):
+        """Test remove an array of admins from a group"""
+        group = Group.query.filter_by(id=1).first()
+        self.assertEqual(len(group.admins), 0)
+        users = [User(**params) for params in user_gen()]
+        group.add_members(users, admin=True)
+        self.assertEqual(len(group.admins), 4)
+        group.remove_members(users, admin=True)
+        self.assertEqual(len(group.admins), 0)
 
 
-
-if __name__=='__main__':
+if __name__ == '__main__':
     unittest.main()
+
