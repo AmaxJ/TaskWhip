@@ -2,12 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
 from api import db, app
-from datetime import datetime
-from api.models.users import User
-from api.models.tasks import Task
-from api.models.groups import Group
 import unittest
-import json
 from config import TestConfig
 
 app.config.from_object('config.TestConfig')
