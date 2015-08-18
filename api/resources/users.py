@@ -11,7 +11,8 @@ user_field = {
     'email' : fields.String,
     'rank' : fields.String,
     'tasks' : fields.List(fields.String),
-    'uri' : fields.Url('user')
+    'uri' : fields.Url('user'),
+    'company_id' : fields.Integer
 }
 
 class UserListAPI(Resource):
@@ -22,8 +23,8 @@ class UserListAPI(Resource):
                                 location='json', help="Username required")
         self.parser.add_argument('email', type=str, required=True,
                                  location='json',help="Email required")
-        self.parser.add_argument('password', type=str, required=True,
-                                  location='json', help="Password required")
+        self.parser.add_argument('password', type=str,
+                                  location='json', help="Enter a password")
         self.parser.add_argument('company_id', type=int, location='json',
                                   help='Company ID required')
         super(UserListAPI, self).__init__()
@@ -37,17 +38,20 @@ class UserListAPI(Resource):
             return {"error" : "Failed to retrieve users."}, 404
 
     def post(self):
+        args = self.parser.parse_args()
         try:
-            args = self.parser.parse_args()
             user = User(username=args["username"],
-                           email=args["email"])
-            user.hash_password(args["password"])
+                        email=args["email"],
+                        company_id=args["company_id"])
+            if args["password"] is not None:
+                user.hash_password(args["password"])
             db.session.add(user)
             db.session.commit()
-            return {"user": marshal(user, user_field) }, 200
+            return {"user" : marshal(user, user_field) }, 200
         except Exception as e:
             print e
-            return {"error":"Error creating new user"}, 404
+            return {"error":"Error creating new user",
+                    "msg" : str(e) }, 404
 
 
 
