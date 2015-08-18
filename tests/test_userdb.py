@@ -20,7 +20,6 @@ class UserDBTests(DatabaseTestCase):
                     rank='Admin', company_id=1)
         db.session.add(company)
         db.session.add(user)
-        db.session.commit()
 
     def test_user_is_created_in_db(self):
         """Test user is successfuly created and stored
@@ -31,7 +30,6 @@ class UserDBTests(DatabaseTestCase):
                     email='oneal@gmail.com',
                     rank='Admin', company_id=1)
         db.session.add(user)
-        db.session.commit()
         self.assertEqual(len(User.query.all()), 2)
         self.assertEqual(user.email, 'oneal@gmail.com')
         self.assertEqual(user.username, 'patrice')
@@ -44,7 +42,6 @@ class UserDBTests(DatabaseTestCase):
         self.assertEqual(len(User.query.all()), 1)
         user = User.query.filter_by(username="guido").first()
         db.session.delete(user)
-        db.session.commit()
         self.assertEqual(len(User.query.all()), 0)
 
 
@@ -53,7 +50,6 @@ class UserDBTests(DatabaseTestCase):
         successfully verified"""
         user = User.query.filter_by(username="guido").first()
         user.hash_password('python')
-        db.session.commit()
         self.assertEqual(user.verify_password('python'), True)
 
 

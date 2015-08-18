@@ -1,5 +1,5 @@
 from api import db, bcrypt
-from api.models.tasks import Task 
+from api.models.tasks import Task
 from mixins import DbMixin
 
 tasks_tbl = db.Table('tasks_tbl',
@@ -14,13 +14,14 @@ class User(db.Model, DbMixin):
     email = db.Column(db.String(255), unique=True)
     rank = db.Column(db.String(10), default="user")
     tasks = db.relationship('Task', secondary=tasks_tbl,
-        backref='user') #add lazy loading?
+                            backref='user') #add lazy loading?
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    
+
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
-            setattr(self, key, value)
-            
+            if hasattr(self, key):
+                setattr(self, key, value)
+
     def hash_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password)
 

@@ -102,6 +102,7 @@ class Company(db.Model, DbMixin):
         try:
             groups = getattr(self, "groups")
             groups.append(group)
+            self._update_group_count(groups)
             db.session.commit()
             return True
         except Exception as e:
@@ -112,22 +113,21 @@ class Company(db.Model, DbMixin):
         try:
             groups = getattr(self, "groups")
             groups.remove(group)
+            self._update_group_count(groups)
             db.session.commit()
             return True
         except Exception as e:
             raise InvalidGroupError(e)
 
-    def update_group_count(self):
-        """Updates the group_count attribute if the number of groups has
-        changed.
-        """
+    def _update_group_count(self, groups):
+        """Updates the group_count attribute."""
         group_count = getattr(self, "group_count")
-        groups = getattr(self, "groups")
-        if len(groups) != group_count:
-            setattr(self, "group_count", len(groups))
-            db.session.commit()
+        numGroups = len(groups)
+        if numGroups != group_count:
+            setattr(self, "group_count", numGroups)
             return True
-        return False
+        else:
+            return False
 
     def add_employees(self, user):
         """Registers users as a company employees.
