@@ -11,7 +11,7 @@ class UserListResourceTest(ResourceTestCase):
     """Test of the UserListAPI resource"""
 
     def __init__(self, *args, **kwargs):
-        ResourceTestCase.__init__(self, *args, **kwargs)
+        super(UserListResourceTest, self).__init__(*args, **kwargs)
 
     def setUp(self):
         db.create_all()
@@ -55,7 +55,7 @@ class UserApiResourceTest(ResourceTestCase):
     """Test of the UserAPI resource"""
 
     def __init__(self, *args, **kwargs):
-        ResourceTestCase.__init__(self, *args, **kwargs)
+        super(UserApiResourceTest, self).__init__(*args, **kwargs)
 
     def setUp(self):
         db.create_all()
@@ -100,7 +100,7 @@ class UserApiResourceTest(ResourceTestCase):
         self.assertEqual(data["user"]["username"], "Bob")
 
     def test_delete_a_single_user(self):
-        """Test GET to users/<user_id>/ returns a single user"""
+        """Test delete to users/<user_id>/ deletes specified user"""
         rv = self.app.get(self.URLROOT + "/users" )
         data = json.loads(rv.data)
         self.assertEqual(len(data["users"]), 1)

@@ -17,7 +17,7 @@ user_params = user_gen()
 
 class GroupDbTests(DatabaseTestCase):
     def __init__(self, *args, **kwargs):
-        DatabaseTestCase.__init__(self, *args, **kwargs)
+        super(GroupDbTests, self).__init__(*args, **kwargs)
 
     def setUp(self):
         db.create_all()

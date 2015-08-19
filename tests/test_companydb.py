@@ -15,7 +15,7 @@ group_params = {
 class CompanyDBTests(DatabaseTestCase):
 
     def __init__(self, *args, **kwargs):
-        DatabaseTestCase.__init__(self,*args, **kwargs)
+        super(CompanyDBTests, self).__init__(*args, **kwargs)
 
     def setUp(self):
         db.create_all()

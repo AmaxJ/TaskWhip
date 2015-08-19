@@ -13,7 +13,7 @@ from api.models.groups import Group
 class TasksDBTests(DatabaseTestCase):
 
     def __init__(self, *args, **kwargs):
-        DatabaseTestCase.__init__(self,*args, **kwargs)
+        super(TasksDBTests, self).__init__(*args, **kwargs)
 
     def setUp(self):
         db.create_all()

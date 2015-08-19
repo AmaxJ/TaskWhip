@@ -10,7 +10,7 @@ from api.models.groups import Company
 class UserDBTests(DatabaseTestCase):
 
     def __init__(self, *args, **kwargs):
-        DatabaseTestCase.__init__(self,*args, **kwargs)
+        super(UserDBTests, self).__init__(*args, **kwargs)
 
     def setUp(self):
         db.create_all()

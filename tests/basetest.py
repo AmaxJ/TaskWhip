@@ -12,7 +12,7 @@ class BaseTestCase(unittest.TestCase):
     """Base class for all test cases"""
 
     def __init__(self, *args, **kwargs):
-        unittest.TestCase.__init__(self, *args, **kwargs)
+        super(BaseTestCase, self).__init__(*args, **kwargs)
         self.app = app.test_client()
 
     def setUp(self):
@@ -27,7 +27,7 @@ class ResourceTestCase(BaseTestCase):
     """Base class for all resource test cases"""
 
     def __init__(self, *args, **kwargs):
-        BaseTestCase.__init__(self, *args, **kwargs)
+        super(ResourceTestCase, self).__init__(*args, **kwargs)
         self.URLROOT = "/taskx/api/v{version}".format(version=TestConfig.API_VERSION)
 
 
