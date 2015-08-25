@@ -1,0 +1,186 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Muli', sans-serif;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    box-shadow: 0 8px 6px -6px grey;
+    overflow: auto;
+}
+
+
+.taskwhip-logo p {
+    display: none;
+}
+
+.name-logo {
+    display: inline-block;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.billboard {
+    padding: 120px 50px 120px 50px;
+    height: 100%;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#main-wrapper {
+    font-weight: lighter;
+}
+
+#intro {
+    display: none;
+}
+
+.main-content {
+    margin: 0 2px 35px 2px;
+
+}
+
+.main-content h2 {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.why h3, p {
+    text-align: center;
+}
+
+.why h3 {
+    text-decoration: underline;
+}
+
+.why p {
+    margin: 0% 10% 0 10%;
+}
+
+.container {
+    text-align: center;
+}
+.container img {
+    max-width: 90%;
+    display: block;
+    margin: auto;
+}
+.container h4 {
+    text-decoration: underline;
+}
+
+#customers {
+    text-align: center;
+}
+
+
+/*---------Media queries --------*/
+
+/*------------Mobile to tablet ---------------*/
+
+@media screen and (min-width: 450px) and (min-height: 500px){
+
+    #intro {
+        display: block;
+        background: url("../img/working.jpg");
+        background-size: cover;
+    }
+    .product-intro {
+        display: inline-block;
+        padding: 26% 20% 5% 4%;
+        max-height: 50%;
+        max-width: 50%;
+        color: #FFF;
+        font-size: 1.2em;
+    }
+
+    .product-intro p{
+        padding-top: -100px;
+    }
+
+    .product-intro span{
+        font-size: 1.6em;
+    }
+
+}
+
+/*-------somewhere in between ------*/
+@media screen and (min-width: 557px) {
+
+    #why-us {
+        box-shadow: 0 8px 6px -6px lightgrey;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+    }
+
+    #why-us > div:nth-of-type(1) {
+        margin-left: 6%;
+    }
+
+    .why {
+        width: 22%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .why h3{
+        text-decoration: none;
+    }
+
+    .container {
+        display: inline-block;
+        width: 100%;
+    }
+    #first-two {}
+
+    #first-two img {
+        float: left;
+        max-width: 100%;
+        margin-left: 10px;
+    }
+
+    #second-two img {
+        float: right;
+        max-width: 100%;
+        margin-right: 10px;
+    }
+
+}
+
+
+
+/*------------Desktop + ---------------*/
+@media screen and (min-width: 680px) {
+
+    header {
+        display: block
+    }
+    .name-logo {
+        display: inline-block;
+        float: left;
+        max-width: 32%;
+        max-height: 32%;
+        margin-left: -15px;
+    }
+    .taskwhip-logo p {
+        display: table;
+        vertical-align: middle;
+        float: right;
+        font-size: 1.3em;
+        color: #58595B;
+        margin-top: 2.8%;
+        transition: .6s ease;
+    }
+
+    .taskwhip-logo p:hover{
+        color: #00E9FF;
+    }
+}
+
+
