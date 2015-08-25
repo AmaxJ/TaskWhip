@@ -75,13 +75,26 @@ header {
     text-decoration: underline;
 }
 
+#first-two p,
+#second-two p {
+    padding: 0 20px 0 20px;
+}
+
+/** review this ---------------------**/
 #customers {
+    background-color: grey;
+    margin-top: 20px;
+    color: #FFF;
+}
+
+#customer-header {
+    display: block;
     text-align: center;
 }
+/**------------------------------------**/
 
 
 /*---------Media queries --------*/
-
 /*------------Mobile to tablet ---------------*/
 
 @media screen and (min-width: 450px) and (min-height: 500px){
@@ -137,7 +150,10 @@ header {
         display: inline-block;
         width: 100%;
     }
-    #first-two {}
+    #first-two,
+    #second-two {
+        padding: 0px 15px 0px 15px;
+    }
 
     #first-two img {
         float: left;
@@ -147,9 +163,20 @@ header {
 
     #second-two img {
         float: right;
-        max-width: 100%;
+        max-width: 60%;
         margin-right: 10px;
+        margin-left: 20px;
     }
+
+    #first-two h4,
+    #second-two h4 {
+        margin-top: 8%;
+    }
+/*
+    #first-two p,
+    #second-two p {
+        padding: 0 20px 0 20px;
+    }*/
 
 }
 
