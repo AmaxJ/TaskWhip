@@ -1,9 +1,29 @@
+/*Beware all ye who enter.. Messy CSS awaits */
+
+@font-face {
+    font-family: 'Brandon';
+    src: url(../fonts/BrandonText-Light.otf);
+}
+
+@font-face{
+    font-family: 'Brandon-heavy';
+    src: url(../fonts/BrandonText-Regular.otf);
+}
+
 * {
     box-sizing: border-box;
 }
 
+
+html,
+body,
+.main-wrapper {
+    height: 100%;
+}
+
 body {
-    font-family: 'Muli', sans-serif;
+    font-family: 'Brandon', 'PT Sans', sans-serif;
+    font-size: 1.1em;
     margin: auto;
 }
 
@@ -12,7 +32,6 @@ header {
     box-shadow: 0 8px 6px -6px grey;
     overflow: auto;
 }
-
 
 .taskwhip-logo p {
     display: none;
@@ -47,6 +66,7 @@ header {
 }
 
 .main-content h2 {
+    font-size: 1.6em;
     text-align: center;
     margin-top: 35px;
 }
@@ -63,14 +83,20 @@ header {
     margin: 0% 10% 0 10%;
 }
 
+.icon {
+    display:none;
+}
+
 .container {
     text-align: center;
 }
+
 .container img {
     max-width: 90%;
     display: block;
     margin: auto;
 }
+
 .container h4 {
     text-decoration: underline;
 }
@@ -80,24 +106,47 @@ header {
     padding: 0 20px 0 20px;
 }
 
-/** review this ---------------------**/
-#customers {
-    background-color: grey;
-    margin-top: 20px;
-    color: #FFF;
-}
-
-#customer-header {
-    display: block;
+.pitch {}
+.main-footer {
     text-align: center;
+    padding: 20px;
+    background-color: lightgrey;
 }
-/**------------------------------------**/
 
+#customers {
+    display: none;
+}
+
+#customer-review {
+    background: url("../img/review.jpg");
+    background-size: cover;
+    height: 50%;
+    color: #FFF;
+    font-size: .9em;
+}
+
+#customer-review p span {
+    font-family: 'Brandon-heavy';
+    font-size: 1em;
+}
+
+.main-footer {
+    font-family: 'Brandon-heavy';
+    font-size: 1.2em;
+}
+
+#github {
+     transition: .3s ease;
+}
+
+#github:hover {
+    transform: scale(1.27);
+}
 
 /*---------Media queries --------*/
 /*------------Mobile to tablet ---------------*/
 
-@media screen and (min-width: 450px) and (min-height: 500px){
+@media screen and (min-width: 450px){
 
     #intro {
         display: block;
@@ -114,13 +163,34 @@ header {
     }
 
     .product-intro p{
-        padding-top: -100px;
+        padding-top: -80px;
     }
 
     .product-intro span{
+        font-family: 'Brandon-heavy';
         font-size: 1.6em;
     }
 
+    #customers {
+        padding-top: 8px;
+        display: block;
+        text-align: center;
+        background: -webkit-linear-gradient(white, #FBEFFF); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(white, #FBEFFF); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(white, #FBEFFF); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(white, #FBEFFF); /* Standard syntax */
+    }
+    #company-banner {
+        max-width: 100%;
+    }
+
+    #customer-review {
+    font-size: 1.2em;
+    }
+
+    #customer-review p span {
+    font-size: 1.3em;
+    }
 }
 
 /*-------somewhere in between ------*/
@@ -136,6 +206,12 @@ header {
         margin-left: 6%;
     }
 
+    .icon {
+        display: inline;
+        padding-left: 33%;
+        max-height: 90px;
+        max-height: 90px;
+    }
     .why {
         width: 22%;
         display: inline-block;
@@ -152,7 +228,7 @@ header {
     }
     #first-two,
     #second-two {
-        padding: 0px 15px 0px 15px;
+        padding: 0px 15px -5px 15px;
     }
 
     #first-two img {
@@ -164,6 +240,7 @@ header {
     #second-two img {
         float: right;
         max-width: 60%;
+        height: 100%;
         margin-right: 10px;
         margin-left: 20px;
     }
@@ -172,12 +249,9 @@ header {
     #second-two h4 {
         margin-top: 8%;
     }
-/*
-    #first-two p,
-    #second-two p {
-        padding: 0 20px 0 20px;
-    }*/
-
+    .pitch {
+        display: table;
+    }
 }
 
 
