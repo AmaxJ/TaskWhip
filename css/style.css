@@ -138,6 +138,8 @@ header {
 }
 
 .grow {
+    -ms-transform: scale(1.2); /* IE 9 */
+    -webkit-transform: scale(1.2); /* Chrome, Safari, Opera */
     transform: scale(1.2);
 }
 
@@ -146,6 +148,8 @@ header {
 }
 
 #github:hover {
+    -ms-transform: scale(1.27);
+    -webkit-transform: scale(1.27);
     transform: scale(1.27);
 }
 
