@@ -1,10 +1,46 @@
-!function(window){
+//protect global scope
+!function($, window, document){
+    //when document is ready
+    $(function(){
+        "use strict"
+        //cache selections
+        var $window = $(window),
+            $introTag = $("#tag-one"),
+            $introMention = $("#tag-two"),
+            $whyUs = $("#why-us"),
+            $header = $("#main-header"),
+            $icons = $(".icon"),
+            $firstTwo = $("#first-two");
 
+        //flags
+        var iconsJumped = false;
 
-    var under = _.map([1,2,3,4], function(num){return num*2});
+        //Main banner text animations
+        $introTag.fadeIn(1500);
+        $introMention.delay(1000).fadeIn(1400);
 
-    under.forEach(function(item){
-        console.log(under);
+        $window.scroll(scrollAnimations);
+
+        function scrollAnimations() {
+            var icon_div = $whyUs.offset().top - 400,
+                reset_div = $firstTwo.offset.top - 400;
+            //fade navbar if not at top of page
+            if ($window.scrollTop() !== 0) {
+                $header.fadeOut(1000);
+            } else {
+                $header.fadeIn(500);
+            }
+            if($window.scrollTop() > icon_div && !iconsJumped) {
+                bounceIcons();
+                iconsJumped = true;
+            }
+        }
+
+        function bounceIcons() {
+            $icons.each(function(index){
+                $(this).delay(1000).addClass('grow');
+            });
+        }
+
     });
-
-}(this);
+}(window.jQuery, window, document);

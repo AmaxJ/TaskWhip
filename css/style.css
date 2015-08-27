@@ -10,6 +10,7 @@
     src: url(../fonts/BrandonText-Regular.otf);
 }
 
+
 * {
     box-sizing: border-box;
 }
@@ -66,6 +67,7 @@ header {
 }
 
 .main-content h2 {
+    font-family: "Brandon-heavy", sans-serif;
     font-size: 1.6em;
     text-align: center;
     margin-top: 35px;
@@ -135,6 +137,10 @@ header {
     font-size: 1.2em;
 }
 
+.grow {
+    transform: scale(1.2);
+}
+
 #github {
      transition: .3s ease;
 }
@@ -148,10 +154,20 @@ header {
 
 @media screen and (min-width: 450px){
 
+    #main-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: #FFF;
+    }
+
     #intro {
         display: block;
         background: url("../img/working.jpg");
         background-size: cover;
+        height: 100%;
+        width: 100%;
     }
     .product-intro {
         display: inline-block;
@@ -161,14 +177,16 @@ header {
         color: #FFF;
         font-size: 1.2em;
     }
-
-    .product-intro p{
-        padding-top: -80px;
-    }
-
-    .product-intro span{
+    /*Tag one and two are the text that display inside the product-intro div*/
+    #tag-one{
+        display: none;
         font-family: 'Brandon-heavy';
-        font-size: 1.6em;
+        font-size: 150%;
+    }
+    #tag-two{
+        padding-top: -80px;
+        display: none;
+        font-weight: bold;
     }
 
     #customers {
@@ -211,6 +229,7 @@ header {
         padding-left: 33%;
         max-height: 90px;
         max-height: 90px;
+        transition: .3s ease;
     }
     .why {
         width: 22%;
