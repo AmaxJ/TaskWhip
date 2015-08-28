@@ -23,7 +23,7 @@ body,
 }
 
 body {
-    font-family: 'Brandon', 'PT Sans', sans-serif;
+    font-family: 'Brandon', sans-serif;
     font-size: 1.1em;
     margin: auto;
 }
@@ -67,7 +67,9 @@ header {
 }
 
 .main-content h2 {
-    font-family: "Brandon-heavy", sans-serif;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 0.045em;
     font-size: 1.6em;
     text-align: center;
     margin-top: 35px;
@@ -100,7 +102,21 @@ header {
 }
 
 .container h4 {
-    text-decoration: underline;
+    font-family: sans-serif;
+    font-weight: lighter;
+    letter-spacing: 0.065em;
+    color: #016833;
+    border: .5px solid #17EF3F;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 8px 5px 5px 5px;
+    margin-bottom: -10px;
+    transition: 0.1s ease;
+}
+
+.container h4:hover {
+    border-color: #00E9FF;
+    color: #00E9FF;
 }
 
 #first-two p,
@@ -108,11 +124,13 @@ header {
     padding: 0 20px 0 20px;
 }
 
-.pitch {}
+.pitch {
+    margin-top: -15px;
+}
 .main-footer {
     text-align: center;
-    padding: 20px;
-    background-color: lightgrey;
+    padding: 15px;
+    background-color:#A7A6A8;
 }
 
 #customers {
@@ -124,7 +142,7 @@ header {
     background-size: cover;
     height: 50%;
     color: #FFF;
-    font-size: .9em;
+    font-size: 15%;
 }
 
 #customer-review p span {
@@ -156,7 +174,7 @@ header {
 /*---------Media queries --------*/
 /*------------Mobile to tablet ---------------*/
 
-@media screen and (min-width: 450px){
+@media screen and (min-width: 450px) and (min-height: 400px){
 
     #main-header {
         position: fixed;
@@ -202,16 +220,23 @@ header {
         background: -moz-linear-gradient(white, #FBEFFF); /* For Firefox 3.6 to 15 */
         background: linear-gradient(white, #FBEFFF); /* Standard syntax */
     }
+
+    #customers h2 {
+        font-family: sans-serif;
+        font-weight: lighter;
+        letter-spacing: 0.05em;
+    }
     #company-banner {
         max-width: 100%;
     }
 
     #customer-review {
-    font-size: 1.2em;
+        overflow: hidden;
+        font-size: 1.2em;
     }
 
     #customer-review p span {
-    font-size: 1.3em;
+        font-size: 1.3em;
     }
 }
 
@@ -230,7 +255,7 @@ header {
 
     .icon {
         display: inline;
-        padding-left: 33%;
+        padding-left: 30%;
         max-height: 90px;
         max-height: 90px;
         transition: .3s ease;
@@ -242,12 +267,17 @@ header {
     }
 
     .why h3{
+        font-family: sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        font-size: 1.1em;
         text-decoration: none;
     }
 
     .container {
-        display: inline-block;
+        display: table;
         width: 100%;
+        overflow: auto;
     }
     #first-two,
     #second-two {
@@ -273,7 +303,7 @@ header {
         margin-top: 8%;
     }
     .pitch {
-        display: table;
+        /*display: table;*/
     }
 }
 

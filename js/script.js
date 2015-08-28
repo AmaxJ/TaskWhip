@@ -22,8 +22,7 @@
         $window.scroll(scrollAnimations);
 
         function scrollAnimations() {
-            var icon_div = $whyUs.offset().top - 400,
-                reset_div = $firstTwo.offset.top - 400;
+            var icon_div = $whyUs.offset().top - 400;
             //fade navbar if not at top of page
             if ($window.scrollTop() !== 0) {
                 $header.fadeOut(1000);
@@ -31,15 +30,24 @@
                 $header.fadeIn(500);
             }
             if($window.scrollTop() > icon_div && !iconsJumped) {
-                bounceIcons();
+                transformIcons(true);
                 iconsJumped = true;
+            } else if ($window.scrollTop() < icon_div && iconsJumped) {
+                transformIcons();
+                iconsJumped = false;
             }
         }
 
-        function bounceIcons() {
-            $icons.each(function(index){
-                $(this).delay(1000).addClass('grow');
-            });
+        function transformIcons(flag) {
+            if (flag) {
+                $icons.each(function(index){
+                    $(this).addClass('grow');
+                });
+            } else {
+                $icons.each(function() {
+                    $(this).removeClass('grow');
+                });
+            }
         }
 
     });
