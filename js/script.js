@@ -22,7 +22,7 @@
         $window.scroll(scrollAnimations);
 
         function scrollAnimations() {
-            var icon_div = $whyUs.offset().top - 400;
+            var icon_div = $whyUs.offset().top - 300;
             //fade navbar if not at top of page
             if ($window.scrollTop() !== 0) {
                 $header.fadeOut(1000);
