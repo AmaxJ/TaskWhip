@@ -103,10 +103,10 @@ header {
 
 .container h4 {
     font-family: sans-serif;
-    font-weight: lighter;
+    font-weight: 500;
+    color:black;
     letter-spacing: 0.065em;
-    color: #016833;
-    border: .5px solid #17EF3F;
+    border: 1px solid #17EF3F;
     border-radius: 5px;
     display: inline-block;
     padding: 8px 5px 5px 5px;
@@ -115,13 +115,15 @@ header {
 }
 
 .container h4:hover {
-    border-color: #00E9FF;
-    color: #00E9FF;
+    border-color: #4EEAFF;
+    color: #4EEAFF;
 }
 
 #first-two p,
 #second-two p {
     padding: 0 20px 0 20px;
+    font-weight: 450;
+    letter-spacing: 0.03em;
 }
 
 .pitch {
@@ -129,8 +131,11 @@ header {
 }
 .main-footer {
     text-align: center;
+    font-family: sans-serif;
+    font-weight: 300;
+    font-size: 1.3em;
     padding: 15px;
-    background-color:#A7A6A8;
+    background-color: rgba(167, 166, 168, 0.4);
 }
 
 #customers {
@@ -148,11 +153,6 @@ header {
 #customer-review p span {
     font-family: 'Brandon-heavy';
     font-size: 1em;
-}
-
-.main-footer {
-    font-family: 'Brandon-heavy';
-    font-size: 1.2em;
 }
 
 .grow {
@@ -174,7 +174,7 @@ header {
 /*---------Media queries --------*/
 /*------------Mobile to tablet ---------------*/
 
-@media screen and (min-width: 450px) and (min-height: 400px){
+@media screen and (min-width: 450px){
 
     #main-header {
         position: fixed;
@@ -211,6 +211,19 @@ header {
         font-weight: bold;
     }
 
+    .container h4 {
+        font-weight: 500;
+        letter-spacing: 0.065em;
+        color: white;
+        border: 1px solid white;
+        margin-bottom: -10px;
+    }
+
+    container h4:hover {
+        border-color: #D8E8FF;
+        color: #D8E8FF;
+    }
+
     #customers {
         padding-top: 8px;
         display: block;
@@ -245,8 +258,8 @@ header {
 
     #why-us {
         box-shadow: 0 8px 6px -6px lightgrey;
-        margin-bottom: 25px;
-        padding-bottom: 20px;
+        margin-bottom: -8px;
+        padding-bottom: 50px;
     }
 
     #why-us > div:nth-of-type(1) {
@@ -282,6 +295,12 @@ header {
     #first-two,
     #second-two {
         padding: 0px 15px -5px 15px;
+        background-color: #70C56D;
+        color: white;
+    }
+
+    #first-two {
+        margin-bottom: -40px;
     }
 
     #first-two img {
@@ -296,6 +315,7 @@ header {
         height: 100%;
         margin-right: 10px;
         margin-left: 20px;
+        padding: 10px;
     }
 
     #first-two h4,
