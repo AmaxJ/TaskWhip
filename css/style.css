@@ -57,10 +57,6 @@ header {
     display: none;
 }
 
-.main-content {
-    margin: 0 2px 35px 2px;
-}
-
 .main-content h2 {
     font-family: sans-serif;
     font-weight: lighter;
@@ -90,11 +86,13 @@ header {
     text-align: center;
     background-color: #70C56D;
     color: white;
+    padding: 20px 0 10px 0;
 }
 
 .container img {
-    max-width: 90%;
-    display: block;
+    max-width: 60%;
+    max-height: 60%;
+    display: inline-block;
     margin: auto;
 }
 
@@ -112,9 +110,10 @@ header {
 }
 
 .container h4:hover {
-    border-color: #4EEAFF;
-    color: #4EEAFF;
+    border-color: #1572B6;
+    color: #1572B6;
 }
+
 
 #first-two p,
 #second-two p {
@@ -135,23 +134,39 @@ header {
     background-color: rgba(167, 166, 168, 0.4);
 }
 
-#customers {
+#tech {
     display: none;
 }
 
-#customer-review {
+#mailing-list {
     background: url("../img/review.jpg");
     background-size: cover;
+    padding-top: 5%;
     height: 50%;
     color: #FFF;
-    font-size: 15%;
-}
-
-#customer-review p span {
-    font-family: 'Brandon-heavy';
     font-size: 1em;
+    text-align: center;
 }
 
+#mailing-list p {
+    margin-bottom: 40px;
+}
+
+#mailing-list a{
+    font-family: "Brandon-heavy";
+    text-decoration: none;
+    border: 1.8px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    vertical-align: bottom;
+}
+
+#mailing-list a:hover {
+    /*background-color: #DD25C2;*/
+    border-color: #15FF00;
+    color: #15FF00;
+}
 .grow {
     -ms-transform: scale(1.2); /* IE 9 */
     -webkit-transform: scale(1.2); /* Chrome, Safari, Opera */
@@ -216,42 +231,64 @@ header {
         margin-bottom: -10px;
     }
 
-    container h4:hover {
-        border-color: #D8E8FF;
-        color: #D8E8FF;
-    }
-
     #first-two,
     #second-two {
         color: white;
     }
 
-    #customers {
-        padding-top: 8px;
+    #tech {
         display: block;
         text-align: center;
-        background: -webkit-linear-gradient(white, #FBEFFF); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(white, #FBEFFF); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(white, #FBEFFF); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(white, #FBEFFF); /* Standard syntax */
     }
 
-    #customers h2 {
+    #tech-header h2{
+        display: inline-block;
         font-family: sans-serif;
         font-weight: lighter;
         letter-spacing: 0.05em;
+        font-size: 1.4em;
     }
+
+    #tech-icons img{
+        display: inline-block;
+        max-width: 12%;
+        max-height: 12%;
+        padding: 15px;
+        margin-right: 30px;
+        transition: .2s ease;
+    }
+
+    #tech-icons img:first-child {
+        margin-left: 30px;
+    }
+
+    #tech-icons img:hover {
+        -ms-transform: translate(0px, -15px);
+        -webkit-transform: translate(0px, -15px);
+        transform: translate(0px, -15px);
+    }
+
+    #tech-footer a {
+        font-family: "Brandon-heavy";
+        text-decoration: none;
+        border-radius: 5px;
+        color: #079100;
+        padding: 3px;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+
+    #tech-footer a:hover {
+        color: #1572B6;
+    }
+
     #company-banner {
         max-width: 100%;
     }
 
-    #customer-review {
+    #mailing-list {
         overflow: hidden;
         font-size: 1.2em;
-    }
-
-    #customer-review p span {
-        font-size: 1.3em;
     }
 }
 
@@ -288,44 +325,6 @@ header {
         font-size: 1.1em;
         text-decoration: none;
     }
-
-    .container {
-        display: table;
-        width: 100%;
-        overflow: auto;
-    }
-    #first-two,
-    #second-two {
-        padding: 0px 15px -5px 15px;
-        background-color: #70C56D;
-    }
-
-    #first-two {
-        margin-bottom: -40px;
-    }
-
-    #first-two img {
-        float: left;
-        max-width: 100%;
-        margin-left: 10px;
-    }
-
-    #second-two img {
-        float: right;
-        max-width: 60%;
-        height: 100%;
-        margin-right: 10px;
-        margin-left: 20px;
-        padding: 10px;
-    }
-
-    #first-two h4,
-    #second-two h4 {
-        margin-top: 8%;
-    }
-    .pitch {
-        /*display: table;*/
-    }
 }
 
 
@@ -355,6 +354,42 @@ header {
 
     .taskwhip-logo p:hover{
         color: #00E9FF;
+    }
+    .container {
+        display: table;
+        width: 100%;
+        overflow: auto;
+    }
+    #first-two,
+    #second-two {
+        padding: 0px 15px -5px 15px;
+        background-color: #70C56D;
+    }
+
+    #first-two h4,
+    #second-two h4 {
+        margin-top: 8%;
+    }
+
+    #first-two img {
+        float: left;
+        margin-left: 20px;
+        width: 50%;
+        padding-top: 5%;
+        margin-bottom: 0px;
+    }
+
+    #second-two img {
+        float: right;
+        margin-right: 20px;
+        width: 40%;
+        padding-top: 5%;
+        margin-bottom: 10px;
+    }
+    .pitch {
+        display: inline-block;
+        max-width: 45%;
+        margin-top: 0px;
     }
 }
 
