@@ -141,7 +141,7 @@ header {
 #mailing-list {
     background: url("../img/review.jpg");
     background-size: cover;
-    padding-top: 5%;
+    padding: 5% 0 5% 0;
     height: 50%;
     color: #FFF;
     font-size: 1em;
@@ -149,7 +149,7 @@ header {
 }
 
 #mailing-list p {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 #mailing-list a{
@@ -163,10 +163,10 @@ header {
 }
 
 #mailing-list a:hover {
-    /*background-color: #DD25C2;*/
-    border-color: #15FF00;
-    color: #15FF00;
+    background-color: #C300FF;
+    border-color: #C300FF;
 }
+
 .grow {
     -ms-transform: scale(1.2); /* IE 9 */
     -webkit-transform: scale(1.2); /* Chrome, Safari, Opera */
