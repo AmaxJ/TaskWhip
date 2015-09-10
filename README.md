@@ -1,4 +1,4 @@
-#Restful Task manager
+#[TaskWhip](http://www.taskwhip.com/)
 
 ##Note:
 App/api initialization, as well as resources and routes in app/__init__.py
