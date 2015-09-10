@@ -45,6 +45,7 @@ class Task(db.Model, DbMixin):
         else:
             setattr(self, "complete", False)
             setattr(self, "status", "pending")
+            setattr(self, "completedOn", None)
             db.session.commit()
 
 
