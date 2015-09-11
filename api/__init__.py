@@ -13,7 +13,7 @@ bcrypt = Bcrypt(app)
 
 #import resources
 from api.resources.users import UserListAPI, UserAPI
-from api.resources.tasks import TaskListAPI, TasksByGroupId, TasksByGroupName, TaskAPI
+from api.resources.tasks import TaskListAPI, TasksByGroupId, TasksByGroupName, TaskAPI, TasksByUsername
 from api.resources.companies import CompanyList, CompanyAPI
 from api.resources.groups import GroupList, GroupListByCompanyId, GroupAPI
 from api.resources.test import Test
@@ -35,6 +35,9 @@ api.add_resource(TasksByGroupId,
 api.add_resource(TasksByGroupName,
                 '/taskx/api/v{version}/<string:group_name>/tasks'.format(version=API_VERSION),
                 endpoint='tasksByGroupName', strict_slashes=False)
+api.add_resource(TasksByUsername,
+                '/taskx/api/v{version}/users/<string:username>/tasks'.format(version=API_VERSION),
+                endpoint='tasksByUsername', strict_slashes=False)
 api.add_resource(TaskAPI,
                 '/taskx/api/v{version}/<int:group_id>/tasks/<int:id>'.format(version=API_VERSION),
                 endpoint='task', strict_slashes=False)

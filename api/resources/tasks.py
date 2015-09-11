@@ -1,5 +1,6 @@
 from api import db
 from api.models.tasks import Task
+from api.models.users import User
 from api.models.groups import Group
 from flask_restful import Resource, fields, marshal, reqparse
 from flask import url_for, make_response
@@ -169,3 +170,20 @@ class TaskAPI(Resource):
             db.session.commit()
             return {"deleted" : True}
         return {"Error" : "Task not found"}, 404
+
+
+class TasksByUsername(Resource):
+    """Resource for all tasks associated with a specific user"""
+
+    def get(self, username):
+        user = User.query.filter_by(username=username).first()
+        tasks = user.tasks
+        try:
+            return {"tasks":[marshal(task, task_fields) for task in tasks]}, 200
+        except AttributeError as e:
+            print e
+            return {"error": str(e),
+                    "msg" : "User wasn't found in the database. Usernames are case sensitive."}, 500
+
+
+
